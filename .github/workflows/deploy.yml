@@ -1,35 +1,9 @@
-name: Deploy to GitHub Pages
-
+# Disabled — deployment is handled by nextjs.yml
+name: Disabled
 on:
-  push:
-    branches: [main]
-
-permissions:
-  contents: write
-
+  workflow_dispatch:
 jobs:
-  deploy:
+  noop:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - run: npm ci
-
-      - run: npm run build
-        env:
-          DEPLOY_TARGET: gh-pages
-          NEXT_PUBLIC_BASE_PATH: /Portfolio
-
-      - name: Add .nojekyll
-        run: touch out/.nojekyll
-
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
+      - run: echo "Deployment handled by nextjs.yml"
