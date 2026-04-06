@@ -84,7 +84,7 @@ export default function Home() {
         </button>
         <div className="hidden md:flex items-center gap-2">
           <a href="https://linkedin.com/in/sanjay-soralamavu-dev" target="_blank" rel="noopener noreferrer" className="w-9 h-9 grid place-items-center bg-slate-800 text-slate-200 rounded-xl hover:bg-slate-700 transition"><Linkedin size={16} /></a>
-          <a href="https://github.com/sanjaysdev" target="_blank" rel="noopener noreferrer" className="w-9 h-9 grid place-items-center bg-slate-800 text-slate-200 rounded-xl hover:bg-slate-700 transition"><Github size={16} /></a>
+          <a href="https://github.com/Sanjaysoralamavu" target="_blank" rel="noopener noreferrer" className="w-9 h-9 grid place-items-center bg-slate-800 text-slate-200 rounded-xl hover:bg-slate-700 transition"><Github size={16} /></a>
           <a href="#" className="w-9 h-9 grid place-items-center bg-slate-800 text-slate-200 rounded-xl hover:bg-slate-700 transition"><Sparkles size={16} /></a>
           <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="w-9 h-9 grid place-items-center bg-slate-800 text-slate-200 rounded-xl hover:bg-slate-700 transition"><Download size={16} /></a>
           <a href="mailto:sanjayso@asu.edu" className="w-9 h-9 grid place-items-center bg-slate-800 text-slate-200 rounded-xl hover:bg-slate-700 transition"><Mail size={16} /></a>
@@ -224,7 +224,7 @@ export default function Home() {
                   <div className="flex items-center gap-2">
                     {[
                       { Icon: Linkedin, href: "https://linkedin.com/in/sanjay-soralamavu-dev", external: true },
-                      { Icon: Github, href: "https://github.com/sanjaysdev", external: true },
+                      { Icon: Github, href: "https://github.com/Sanjaysoralamavu", external: true },
                       { Icon: Sparkles, href: "#", external: false },
                       { Icon: Download, href: "/resume.pdf", external: true },
                       { Icon: Mail, href: "mailto:sanjayso@asu.edu", external: false },
@@ -488,15 +488,6 @@ export default function Home() {
                   >
                     {[
                       {
-                        logo: "/Dr AIT logo.jpeg",
-                        name: "Dr. Ambedkar Institute Of Technology",
-                        degree: "Bachelor of Engineering",
-                        field: "Computer Science",
-                        location: "Bengaluru, India",
-                        period: "Aug 2018 – Aug 2022",
-                        status: "Graduated",
-                      },
-                      {
                         logo: "/ASU logo.png",
                         name: "Arizona State University",
                         degree: "Master of Science",
@@ -504,6 +495,15 @@ export default function Home() {
                         location: "Tempe, Arizona",
                         period: "Aug 2025 – May 2027",
                         status: "In Progress",
+                      },
+                      {
+                        logo: "/Dr AIT logo.jpeg",
+                        name: "Dr. Ambedkar Institute Of Technology",
+                        degree: "Bachelor of Engineering",
+                        field: "Computer Science",
+                        location: "Bengaluru, India",
+                        period: "Aug 2018 – Aug 2022",
+                        status: "Graduated",
                       },
                     ].map((edu, idx) => (
                       <div key={idx} className="group relative rounded-2xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] transition-all duration-300 p-4 overflow-hidden">
