@@ -23,6 +23,7 @@ jobs:
       - run: npm run build
         env:
           DEPLOY_TARGET: gh-pages
+          NEXT_PUBLIC_BASE_PATH: /Portfolio
 
       - name: Add .nojekyll
         run: touch out/.nojekyll

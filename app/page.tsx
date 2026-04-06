@@ -16,6 +16,8 @@ import {
 
 import AnimatedBackground from "@/components/AnimatedBackground";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export default function Home() {
   const [drawer, setDrawer] = useState(false);
   const [activeTab, setActiveTab] = useState<"Profile" | "Experience" | "Projects" | "Skills" | "Education">("Profile");
@@ -300,7 +302,7 @@ export default function Home() {
                             <div className="relative flex items-center gap-3">
                               <div className="w-11 h-11 rounded-xl bg-[#f5f5f0] border border-white/10 flex-shrink-0 flex items-center justify-center overflow-hidden">
                                 {item.logo
-                                  ? <img src={item.logo} alt={item.org} className="w-full h-full object-contain p-1" />
+                                  ? <img src={`${BASE_PATH}${item.logo}`} alt={item.org} className="w-full h-full object-contain p-1" />
                                   : <span className="text-[10px] font-black text-slate-700">{item.initials}</span>
                                 }
                               </div>
@@ -371,7 +373,7 @@ export default function Home() {
                         <div className="relative flex items-center gap-4 p-4 border-b border-white/5">
                           <div className="w-11 h-11 rounded-xl bg-[#f5f5f0] border border-white/10 flex-shrink-0 flex items-center justify-center overflow-hidden">
                             {job.logo
-                              ? <img src={job.logo} alt={job.org} className="w-full h-full object-contain p-1" />
+                              ? <img src={`${BASE_PATH}${job.logo}`} alt={job.org} className="w-full h-full object-contain p-1" />
                               : <span className="text-[10px] font-black text-slate-700">{job.initials}</span>
                             }
                           </div>
@@ -510,7 +512,7 @@ export default function Home() {
                         <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(rgba(255,255,255,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.5)_1px,transparent_1px)] bg-[size:24px_24px]" />
                         <div className="relative flex items-center gap-4">
                           <div className="w-14 h-14 rounded-xl bg-[#f5f5f0] border border-white/10 flex-shrink-0 flex items-center justify-center overflow-hidden">
-                            <img src={edu.logo} alt={edu.name} className="w-full h-full object-contain p-1.5" />
+                            <img src={`${BASE_PATH}${edu.logo}`} alt={edu.name} className="w-full h-full object-contain p-1.5" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex flex-wrap items-center justify-between gap-2 mb-0.5">
