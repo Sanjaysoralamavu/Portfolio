@@ -219,7 +219,7 @@ export default function Home() {
             <section className="p-5 overflow-y-auto max-h-[70vh]">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
                 <div>
-                  <div className="text-xs font-semibold tracking-wider text-emerald-300">{activeTab.toUpperCase()}</div>
+                  <div className="text-xs font-semibold tracking-wider text-cyan-400">{activeTab.toUpperCase()}</div>
                   <h2 className="text-2xl font-bold text-white">{activeTab === "Profile" && "Welcome To My Portfolio!"} {activeTab === "Experience" && "Professional Experience"} {activeTab === "Projects" && "My Projects"} {activeTab === "Skills" && "Technical Skills"} {activeTab === "Education" && "Education"}</h2>
                 </div>
                 {activeTab === "Profile" && (
