@@ -120,7 +120,7 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="text-cyan-200 font-mono tracking-[0.3em] uppercase text-xs md:text-sm mb-8"
           >
-            MS Computer Science | Data Analyst Associate | Automation Specialist
+            MS Computer Science | Data Analyst | Automation Specialist
           </motion.p>
 
           <motion.p
