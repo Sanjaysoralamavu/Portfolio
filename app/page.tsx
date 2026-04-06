@@ -198,7 +198,7 @@ export default function Home() {
                 <div className="w-12 h-12 rounded-full bg-cyan-400/20 flex items-center justify-center text-cyan-300 font-black">SD</div>
                 <div>
                   <div className="font-bold text-white">Sanjay S Dev</div>
-                  <div className="text-xs uppercase tracking-wider text-slate-400">Data Analyst Associate</div>
+                  <div className="text-xs uppercase tracking-wider text-slate-400">Data Analyst</div>
                 </div>
               </div>
               <nav className="space-y-2">
