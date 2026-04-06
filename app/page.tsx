@@ -88,7 +88,7 @@ export default function Home() {
           <a href="https://linkedin.com/in/sanjay-soralamavu-dev" target="_blank" rel="noopener noreferrer" className="w-9 h-9 grid place-items-center bg-slate-800 text-slate-200 rounded-xl hover:bg-slate-700 transition"><Linkedin size={16} /></a>
           <a href="https://github.com/Sanjaysoralamavu" target="_blank" rel="noopener noreferrer" className="w-9 h-9 grid place-items-center bg-slate-800 text-slate-200 rounded-xl hover:bg-slate-700 transition"><Github size={16} /></a>
           <a href="#" className="w-9 h-9 grid place-items-center bg-slate-800 text-slate-200 rounded-xl hover:bg-slate-700 transition"><Sparkles size={16} /></a>
-          <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="w-9 h-9 grid place-items-center bg-slate-800 text-slate-200 rounded-xl hover:bg-slate-700 transition"><Download size={16} /></a>
+          <a href={`${BASE_PATH}/resume.pdf`} target="_blank" rel="noopener noreferrer" className="w-9 h-9 grid place-items-center bg-slate-800 text-slate-200 rounded-xl hover:bg-slate-700 transition"><Download size={16} /></a>
           <a href="mailto:sanjayso@asu.edu" className="w-9 h-9 grid place-items-center bg-slate-800 text-slate-200 rounded-xl hover:bg-slate-700 transition"><Mail size={16} /></a>
         </div>
       </nav>
@@ -163,7 +163,7 @@ export default function Home() {
               Explore Portfolio
             </motion.button>
             <a
-              href="/resume.pdf"
+              href={`${BASE_PATH}/resume.pdf`}
               target="_blank"
               rel="noopener noreferrer"
               className="px-10 py-4 bg-slate-800 border border-blue-500 rounded-full font-bold hover:bg-blue-600 hover:text-white transition-all hover:scale-105 shadow-xl shadow-black/30"
@@ -228,7 +228,7 @@ export default function Home() {
                       { Icon: Linkedin, href: "https://linkedin.com/in/sanjay-soralamavu-dev", external: true },
                       { Icon: Github, href: "https://github.com/Sanjaysoralamavu", external: true },
                       { Icon: Sparkles, href: "#", external: false },
-                      { Icon: Download, href: "/resume.pdf", external: true },
+                      { Icon: Download, href: `${BASE_PATH}/resume.pdf`, external: true },
                       { Icon: Mail, href: "mailto:sanjayso@asu.edu", external: false },
                     ].map(({ Icon, href, external }, idx) => (
                       <a
