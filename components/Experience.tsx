@@ -5,28 +5,29 @@ import { Briefcase } from 'lucide-react';
 const expData = [
   {
     company: "Hitachi Digital Services",
-    role: "Associate / Software Engineer",
+    role: "Data Analyst Associate",
     date: "August 2022 - August 2025",
-    location: "Bengaluru, Karnataka, India",
+    location: "Bengaluru, India",
     bullets: [
-      "Developed automated workflows integrating REST APIs, Power Automate, and SharePoint, reducing manual QA tasks by 40%",
-      "Created Python-based validation scripts and Streamlit dashboards for test data processing and audit analysis",
-      "Designed ETL pipelines and data quality checks to ensure reliability of analytics used for system monitoring",
-      "Improved developer efficiency by automating test reporting and metrics visualization using Power BI and MySQL"
+      "Designed and maintained enterprise Power BI dashboards for Quality Excellence Index (QEI) and audit KPIs, raising process efficiency by 30%",
+      "Prepared, cleansed, and analyzed large datasets using Python, SQL, and Excel to track compliance, risk indicators, and operational health",
+      "Built advanced Excel solutions with PivotTables, Power Query, and data validation for repeatable reporting and ad-hoc analytics",
+      "Executed regression and trend analysis on global quality audit data, reducing non-compliance prediction errors by 20%",
+      "Automated recurring reporting and e-mail distribution using Power Automate, scaling communication across stakeholders",
+      "Translated audit requirements into dashboard specs, monthly leadership reports, and actionable insights across regions"
     ]
   },
   {
     company: "Indian Institute of Science",
     role: "Data Science Intern",
-    date: "January 2022 - June 2022",
-    location: "India",
+    date: "January 2022 - July 2022",
+    location: "Bengaluru, India",
     bullets: [
-      "Developed a ball tracking application using smartphone cameras with annotated data for machine learning model training",
-      "Built interactive dashboards and visualizations using Python, Matplotlib, and Seaborn to summarize movement patterns",
-      "Performed data preprocessing, cleaning, and validation on collected motion datasets to ensure quality",
-      "Conducted exploratory data analysis (EDA) to identify patterns and trends in ball trajectories",
-      "Generated insights from quantitative and qualitative data to support decision making",
-      "Collaborated with supervisors to document methodology, results, and recommendations"
+      "Developed a ball tracking application leveraging smartphone video capture and annotated data pipelines for model training",
+      "Created interactive visualizations in Python (Matplotlib & Seaborn) to explore trajectory performance metrics",
+      "Managed data preprocessing, cleaning, and validation for higher model reliability and consistency",
+      "Conducted EDA to reveal patterns in motion datasets and support model improvements",
+      "Delivered documented methodology, outcomes, and recommendations to research stakeholders"
     ]
   }
 ];
