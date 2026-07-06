@@ -111,7 +111,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-6xl md:text-8xl font-black tracking-tight mb-4 text-white"
           >
-            SANJAY S DEV
+            Sanjay S Dev
           </motion.h1>
 
           <motion.p
@@ -120,7 +120,7 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="text-cyan-200 font-mono tracking-[0.3em] uppercase text-xs md:text-sm mb-8"
           >
-            MS Computer Science | Data Analyst | Automation Specialist
+            Data Analyst at Social Embeddedness | MS Computer Science | Automation Specialist
           </motion.p>
 
           <motion.p
