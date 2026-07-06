@@ -279,13 +279,22 @@ export default function Home() {
                             initials: "HDS",
                           },
                           {
-                            period: "Aug 2025 – Present",
+                            period: "Aug 2025 – May 2026",
                             role: "Barista",
                             org: "Starbucks (Aramark)",
                             location: "Tempe, Arizona",
                             highlight: "Delivering quality service at ASU campus Starbucks under Aramark",
                             logo: "/Aramark.jpg",
                             initials: "ARK",
+                          },
+                          {
+                            period: "May 2026 – Present",
+                            role: "Data Analyst",
+                            org: "Social Embeddedness, Arizona State University",
+                            location: "Tempe, Arizona",
+                            highlight: "Building ETL pipelines and Tableau dashboards for engagement data",
+                            logo: "/ASU logo.png",
+                            initials: "ASU",
                           },
                           {
                             period: "Aug 2025 – Present",
