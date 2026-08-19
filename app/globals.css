@@ -1,27 +1,6 @@
 @import "tailwindcss";
 
-:root {
-  --hero-bg-start: #0a1628;
-  --hero-bg-end: #1a3a6b;
-  --accent: #3b82f6;
-  --accent-hover: #2563eb;
-  --card-bg: #f0f4ff;
-  --card-sidebar-bg: #e8eef8;
-  --card-border: #dce8ff;
-  --card-heading: #1a2540;
-  --card-body: #4a5568;
-  --stat-card-bg: #ffffff;
-  --stat-card-border: #dce8ff;
-  --nav-active-bg: #dbeafe;
-  --nav-active-text: #1d4ed8;
-  --tag-bg: #dbeafe;
-  --tag-text: #1e40af;
-  --timeline-bar: #3b82f6;
-  --skill-icon-bg: #1e293b;
-
-  --background: #0a1628;
-  --foreground: #ffffff;
-}
+:root { --background: #f4f6f5; --foreground: #173138; }
 
 @theme inline {
   --color-background: var(--background);
@@ -30,15 +9,38 @@
   --font-mono: var(--font-geist-mono);
 }
 
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+
 body {
   margin: 0;
   min-height: 100vh;
-  background: linear-gradient(180deg, var(--hero-bg-start), var(--hero-bg-end));
+  background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
 
-::selection {
-  background: rgba(59, 114, 245, 0.25);
+::selection { background: #b8e0dc; color: #173138; }
+
+.eyebrow { color: #00899a; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; }
+
+.section-title { margin-top: 1rem; color: #173138; font-size: clamp(2.35rem, 5vw, 4.4rem); font-weight: 900; letter-spacing: 0; line-height: 1.02; }
+
+.field-label { display: block; color: #52656a; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+
+.field-input {
+  width: 100%;
+  margin-top: 0.6rem;
+  border: 1px solid rgba(23, 49, 56, 0.2);
+  border-radius: 0.25rem;
+  background: #f4f6f5;
+  color: #173138;
+  font-size: 0.95rem;
+  letter-spacing: 0;
+  line-height: 1.5;
+  padding: 0.75rem 0.875rem;
 }
 
+.field-input:focus { border-color: #00899a; box-shadow: 0 0 0 3px rgba(0, 137, 154, 0.17); outline: none; }
+.field-input::placeholder { color: #7b8c90; }
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
