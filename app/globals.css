@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
-:root { --background: #f4f6f5; --foreground: #173138; }
+:root {
+  --background: #f4f6f5;
+  --foreground: #173138;
+}
 
 @theme inline {
   --color-background: var(--background);
@@ -9,7 +12,10 @@
   --font-mono: var(--font-geist-mono);
 }
 
-html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
 
 body {
   margin: 0;
@@ -19,13 +25,36 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-::selection { background: #b8e0dc; color: #173138; }
+::selection {
+  background: #b8e0dc;
+  color: #173138;
+}
 
-.eyebrow { color: #00899a; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; }
+.eyebrow {
+  color: #00899a;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
 
-.section-title { margin-top: 1rem; color: #173138; font-size: clamp(2.35rem, 5vw, 4.4rem); font-weight: 900; letter-spacing: 0; line-height: 1.02; }
+.section-title {
+  margin-top: 1rem;
+  color: #173138;
+  font-size: clamp(2.35rem, 5vw, 4.4rem);
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.02;
+}
 
-.field-label { display: block; color: #52656a; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+.field-label {
+  display: block;
+  color: #52656a;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
 
 .field-input {
   width: 100%;
@@ -40,7 +69,18 @@ body {
   padding: 0.75rem 0.875rem;
 }
 
-.field-input:focus { border-color: #00899a; box-shadow: 0 0 0 3px rgba(0, 137, 154, 0.17); outline: none; }
-.field-input::placeholder { color: #7b8c90; }
+.field-input:focus {
+  border-color: #00899a;
+  box-shadow: 0 0 0 3px rgba(0, 137, 154, 0.17);
+  outline: none;
+}
 
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+.field-input::placeholder {
+  color: #7b8c90;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

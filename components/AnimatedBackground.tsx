@@ -35,7 +35,7 @@ export default function AnimatedBackground({ style }: AnimatedBackgroundProps) {
         this.vx = (Math.random() - 0.5) * 0.5;
         this.vy = (Math.random() - 0.41) * 0.5;
         this.size = Math.random() * 1.8 + 0.8;
-        this.hue = 210 + Math.random() * 30;  // monochrome blue range
+        this.hue = 175 + Math.random() * 25;  // teal range matching #00899a
       }
 
       update(elapsed: number) {
@@ -71,10 +71,10 @@ export default function AnimatedBackground({ style }: AnimatedBackgroundProps) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      gradient.addColorStop(0, '#05132f');
-      gradient.addColorStop(0.4, '#0c2b52');
-      gradient.addColorStop(0.8, '#0a3f70');
-      gradient.addColorStop(1, '#03172f');
+      gradient.addColorStop(0, '#061a1d');
+      gradient.addColorStop(0.4, '#0d2b30');
+      gradient.addColorStop(0.8, '#0a3338');
+      gradient.addColorStop(1, '#051417');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
