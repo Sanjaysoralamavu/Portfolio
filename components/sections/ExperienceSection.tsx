@@ -14,34 +14,11 @@ export default function ExperienceSection() {
     >
       <div className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:py-32">
         {/* Header */}
-        <div className="mb-16 grid gap-10 border-b border-[#173138]/15 pb-12 lg:grid-cols-[.9fr_1.1fr] lg:items-end">
+        <div className="mb-12">
           <SectionHeading
-            eyebrow="The path so far"
-            title="Work shaped by curiosity, clarity, and follow-through."
+            eyebrow="Experience"
+            title="Work Experience"
           />
-          <div className="border-l-2 border-[#e57356] pl-6">
-            <p className="max-w-2xl text-lg leading-8 text-[#52656a]">
-              The journey began with research and motion data, grew through
-              global enterprise reporting, and now sits at the intersection of
-              university data, dashboards, and repeatable systems.
-            </p>
-            <div className="mt-7 grid gap-4 border-t border-[#173138]/15 pt-5 sm:grid-cols-3">
-              {[
-                { label: "Started with", value: "Research and discovery" },
-                { label: "Learned in", value: "Enterprise analytics" },
-                { label: "Building now", value: "Reliable university data systems" },
-              ].map((item) => (
-                <div key={item.label}>
-                  <p className="text-xs font-black uppercase tracking-[0.14em] text-[#00899a]">
-                    {item.label}
-                  </p>
-                  <p className="mt-2 text-sm font-semibold leading-6 text-[#173138]">
-                    {item.value}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
 
         {/* Role cards */}
@@ -53,7 +30,7 @@ export default function ExperienceSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.7 }}
-              className="grid gap-10 border-t border-[#173138]/10 pt-8 lg:grid-cols-[.75fr_1.25fr]"
+              className="grid gap-10 border-t border-[#173138]/10 pt-10 first:border-t-0 first:pt-0 lg:grid-cols-[.75fr_1.25fr]"
             >
               {/* Left — sticky label */}
               <div className="lg:sticky lg:top-28 lg:self-start">

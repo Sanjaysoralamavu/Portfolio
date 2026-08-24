@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { projects } from "@/lib/data";
@@ -41,73 +41,68 @@ export default function Projects() {
           {projects.map((project) => {
             const isOpen = openSlug === project.slug;
             return (
-              <button
-                key={project.slug}
-                type="button"
-                aria-expanded={isOpen}
-                aria-controls={`project-${project.slug}`}
-                onClick={() =>
-                  setOpenSlug(isOpen ? null : project.slug)
-                }
-                className="group relative min-h-[350px] overflow-hidden border border-white/25 bg-white/[0.06] p-6 text-left transition duration-300 hover:-translate-y-1 hover:border-[#a7d9d7] hover:bg-white/[0.1] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white sm:p-8"
-              >
-                <span
-                  className="absolute right-0 top-0 h-20 w-20 translate-x-10 -translate-y-10 rounded-full bg-[#00899a]/25 transition-transform duration-300 group-hover:translate-x-6 group-hover:-translate-y-6"
-                  aria-hidden="true"
-                />
-                <div className="relative flex h-full flex-col">
-                  <div className="flex items-start justify-between gap-5">
-                    <div>
-                      <p className="text-xs font-black uppercase tracking-[0.18em] text-[#e57356]">
-                        Project {project.number}
-                      </p>
-                      <h3 className="mt-4 text-2xl font-black leading-tight text-white sm:text-3xl">
-                        {project.title}
-                      </h3>
-                      <p className="mt-3 max-w-xl text-sm leading-7 text-white/70">
-                        {project.org} · {project.teaser}
+              <Fragment key={project.slug}>
+                <button
+                  type="button"
+                  aria-expanded={isOpen}
+                  aria-controls={`project-${project.slug}`}
+                  onClick={() => setOpenSlug(isOpen ? null : project.slug)}
+                  className="group relative min-h-[350px] overflow-hidden border border-white/25 bg-white/[0.06] p-6 text-left transition duration-300 hover:-translate-y-1 hover:border-[#a7d9d7] hover:bg-white/[0.1] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white sm:p-8"
+                >
+                  <span
+                    className="absolute right-0 top-0 h-20 w-20 translate-x-10 -translate-y-10 rounded-full bg-[#00899a]/25 transition-transform duration-300 group-hover:translate-x-6 group-hover:-translate-y-6"
+                    aria-hidden="true"
+                  />
+                  <div className="relative flex h-full flex-col">
+                    <div className="flex items-start justify-between gap-5">
+                      <div>
+                        <p className="text-xs font-black uppercase tracking-[0.18em] text-[#e57356]">
+                          Project {project.number}
+                        </p>
+                        <h3 className="mt-4 text-2xl font-black leading-tight text-white sm:text-3xl">
+                          {project.title}
+                        </h3>
+                        <p className="mt-3 max-w-xl text-sm leading-7 text-white/70">
+                          {project.org} · {project.teaser}
+                        </p>
+                      </div>
+                      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-white/25 text-[#a7d9d7] transition group-hover:bg-[#a7d9d7] group-hover:text-[#173138]">
+                        <ArrowDown
+                          size={18}
+                          className={`transition-transform duration-300 ${
+                            isOpen ? "rotate-180" : ""
+                          }`}
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </div>
+
+                    <div className="mt-auto pt-8">
+                      <div className="flex flex-wrap items-center gap-3 border-t border-white/15 pt-5 text-xs font-bold uppercase tracking-[0.1em] text-white/65">
+                        <span>{project.date}</span>
+                        <span className="h-1 w-1 rounded-full bg-[#e57356]" />
+                        <span>{project.feedback}</span>
+                      </div>
+                      <p className="mt-5 text-sm font-bold text-[#a7d9d7]">
+                        {isOpen
+                          ? "Close this story"
+                          : "See how the project came together"}
                       </p>
                     </div>
-                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-white/25 text-[#a7d9d7] transition group-hover:bg-[#a7d9d7] group-hover:text-[#173138]">
-                      <ArrowDown
-                        size={18}
-                        className={`transition-transform duration-300 ${
-                          isOpen ? "rotate-180" : ""
-                        }`}
-                        aria-hidden="true"
-                      />
-                    </span>
                   </div>
+                </button>
 
-                  <div className="mt-auto pt-8">
-                    <div className="flex flex-wrap items-center gap-3 border-t border-white/15 pt-5 text-xs font-bold uppercase tracking-[0.1em] text-white/65">
-                      <span>{project.date}</span>
-                      <span className="h-1 w-1 rounded-full bg-[#e57356]" />
-                      <span>{project.feedback}</span>
-                    </div>
-                    <p className="mt-5 text-sm font-bold text-[#a7d9d7]">
-                      {isOpen ? "Close this story" : "See how the project came together"}
-                    </p>
-                  </div>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Expanded case studies */}
-        {projects.map((project) => (
-          <AnimatePresence key={project.slug} initial={false}>
-            {openSlug === project.slug && (
-              <motion.article
-                id={`project-${project.slug}`}
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.35, ease: "easeOut" }}
-                className="overflow-hidden pt-12"
-                aria-labelledby={`${project.slug}-title`}
-              >
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.article
+                      id={`project-${project.slug}`}
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.35, ease: "easeOut" }}
+                      className="overflow-hidden py-8 md:col-span-2"
+                      aria-labelledby={`${project.slug}-title`}
+                    >
                 <div className="grid gap-8 lg:grid-cols-[.8fr_1.2fr]">
                   {/* Left meta */}
                   <div>
@@ -224,10 +219,13 @@ export default function Projects() {
                     </footer>
                   </blockquote>
                 )}
-              </motion.article>
-            )}
-          </AnimatePresence>
-        ))}
+                    </motion.article>
+                  )}
+                </AnimatePresence>
+              </Fragment>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
