@@ -1,7 +1,8 @@
 "use client";
 import { Fragment, useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Github } from "lucide-react";
 import { projects } from "@/lib/data";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
@@ -42,11 +43,7 @@ export default function Projects() {
             const isOpen = openSlug === project.slug;
             return (
               <Fragment key={project.slug}>
-                <button
-                  type="button"
-                  aria-expanded={isOpen}
-                  aria-controls={`project-${project.slug}`}
-                  onClick={() => setOpenSlug(isOpen ? null : project.slug)}
+                <div
                   className="group relative min-h-[350px] overflow-hidden border border-white/25 bg-white/[0.06] p-6 text-left transition duration-300 hover:-translate-y-1 hover:border-[#a7d9d7] hover:bg-white/[0.1] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white sm:p-8"
                 >
                   <span
@@ -66,7 +63,14 @@ export default function Projects() {
                           {project.org} · {project.teaser}
                         </p>
                       </div>
-                      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-white/25 text-[#a7d9d7] transition group-hover:bg-[#a7d9d7] group-hover:text-[#173138]">
+                      <button
+                        type="button"
+                        aria-label={`${isOpen ? "Collapse" : "Expand"} ${project.title} project details`}
+                        aria-expanded={isOpen}
+                        aria-controls={`project-${project.slug}`}
+                        onClick={() => setOpenSlug(isOpen ? null : project.slug)}
+                        className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-white/25 text-[#a7d9d7] transition hover:bg-[#a7d9d7] hover:text-[#173138] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                      >
                         <ArrowDown
                           size={18}
                           className={`transition-transform duration-300 ${
@@ -74,7 +78,7 @@ export default function Projects() {
                           }`}
                           aria-hidden="true"
                         />
-                      </span>
+                      </button>
                     </div>
 
                     <div className="mt-auto pt-8">
@@ -83,14 +87,32 @@ export default function Projects() {
                         <span className="h-1 w-1 rounded-full bg-[#e57356]" />
                         <span>{project.feedback}</span>
                       </div>
-                      <p className="mt-5 text-sm font-bold text-[#a7d9d7]">
-                        {isOpen
-                          ? "Close this story"
-                          : "See how the project came together"}
-                      </p>
+                      <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
+                        <button
+                          type="button"
+                          aria-expanded={isOpen}
+                          aria-controls={`project-${project.slug}`}
+                          onClick={() => setOpenSlug(isOpen ? null : project.slug)}
+                          className="text-sm font-bold text-[#a7d9d7] underline-offset-4 transition hover:text-white hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                        >
+                          {isOpen
+                            ? "Close this story"
+                            : "See how the project came together"}
+                        </button>
+                        {project.repository && (
+                          <a
+                            href={project.repository}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 text-sm font-bold text-white/80 underline-offset-4 transition hover:text-[#a7d9d7] hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                          >
+                            <Github size={16} aria-hidden="true" /> GitHub repository
+                          </a>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </button>
+                </div>
 
                 <AnimatePresence initial={false}>
                   {isOpen && (
@@ -159,14 +181,50 @@ export default function Projects() {
                   </div>
                 </div>
 
+                {/* Evidence and project showcase */}
+                {project.metrics && (
+                  <dl className="mt-10 grid overflow-hidden border border-white/20 bg-white/15 sm:grid-cols-2 lg:grid-cols-4">
+                    {project.metrics.map((metric) => (
+                      <div
+                        key={metric.label}
+                        className="bg-[#173138] p-5 sm:p-6"
+                      >
+                        <dt className="text-xs font-bold uppercase tracking-[0.14em] text-white/55">
+                          {metric.label}
+                        </dt>
+                        <dd className="mt-3 text-3xl font-black text-[#a7d9d7]">
+                          {metric.value}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                )}
+
+                {project.showcase && (
+                  <figure className="mt-10 overflow-hidden border border-white/20 bg-white/[0.06]">
+                    <Image
+                      src={`${BASE_PATH}${project.showcase.src}`}
+                      alt={project.showcase.alt}
+                      width={project.showcase.width}
+                      height={project.showcase.height}
+                      sizes="(max-width: 1280px) 100vw, 1200px"
+                      className="h-auto w-full bg-white"
+                    />
+                    <figcaption className="border-t border-white/20 px-5 py-4 text-sm leading-6 text-white/65">
+                      {project.showcase.caption}
+                    </figcaption>
+                  </figure>
+                )}
+
                 {/* Process steps */}
                 <div className="mt-10 grid gap-8 border-y border-white/20 py-10 lg:grid-cols-[.8fr_1.2fr]">
                   <div>
                     <p className="text-xs font-black uppercase tracking-[0.18em] text-[#a7d9d7]">
-                      Making the idea visible
+                      {project.processEyebrow ?? "Making the idea visible"}
                     </p>
                     <h4 className="mt-4 text-2xl font-black leading-8">
-                      This is how I move from plain language to a visual people can think with.
+                      {project.processTitle ??
+                        "This is how I move from plain language to a visual people can think with."}
                     </h4>
                   </div>
                   <ol className="grid gap-4 sm:grid-cols-2">
@@ -185,7 +243,7 @@ export default function Projects() {
                 <div className="mt-10 flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
                   <div>
                     <p className="text-xs font-black uppercase tracking-[0.18em] text-[#a7d9d7]">
-                      Skills demonstrated
+                      Tech stack &amp; skills
                     </p>
                     <div className="mt-4 flex flex-wrap gap-2">
                       {project.skills.map((skill) => (
@@ -198,16 +256,28 @@ export default function Projects() {
                       ))}
                     </div>
                   </div>
-                  {project.certificate && (
-                    <a
-                      href={`${BASE_PATH}${project.certificate}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 rounded bg-[#e57356] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#f18668] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
-                    >
-                      View certificate <ArrowUpRight size={17} aria-hidden="true" />
-                    </a>
-                  )}
+                  <div className="flex flex-wrap gap-3">
+                    {project.repository && (
+                      <a
+                        href={project.repository}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-2 rounded bg-[#a7d9d7] px-5 py-3 text-sm font-bold text-[#173138] transition hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                      >
+                        <Github size={17} aria-hidden="true" /> View repository
+                      </a>
+                    )}
+                    {project.certificate && (
+                      <a
+                        href={`${BASE_PATH}${project.certificate}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-2 rounded bg-[#e57356] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#f18668] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                      >
+                        View certificate <ArrowUpRight size={17} aria-hidden="true" />
+                      </a>
+                    )}
+                  </div>
                 </div>
 
                 {/* Quote */}

@@ -5,6 +5,9 @@ const isGitHubActions = process.env.GITHUB_ACTIONS === "true";
 const nextConfig: NextConfig = {
   reactCompiler: true,
   devIndicators: false,
+  env: {
+    NEXT_PUBLIC_BASE_PATH: isGitHubActions ? "/Portfolio" : "",
+  },
   ...(isGitHubActions && {
     output: "export",
     basePath: "/Portfolio",
