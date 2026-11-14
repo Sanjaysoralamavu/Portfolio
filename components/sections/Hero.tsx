@@ -112,7 +112,7 @@ export default function Hero() {
               <span className="block italic text-[#d7ff43]">usable.</span>
             </h1>
 
-            <p className="mt-8 max-w-xl text-lg leading-8 text-white/68 sm:text-xl">
+            <p className="mt-8 max-w-xl text-lg font-medium leading-8 tracking-[-0.018em] text-white/70 sm:text-[1.3rem] sm:leading-9">
               I build data systems and machine-learning products that turn
               messy inputs into clear decisions.
             </p>
