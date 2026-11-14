@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
+  AnimatePresence,
   motion,
   useReducedMotion,
   useScroll,
@@ -14,7 +15,11 @@ import {
   Database,
   Download,
   Gauge,
+  Linkedin,
+  Mail,
+  Phone,
   Workflow,
+  X,
 } from "lucide-react";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
@@ -39,6 +44,8 @@ const capabilities = [
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
+  const contactMenuRef = useRef<HTMLDivElement>(null);
+  const [contactOpen, setContactOpen] = useState(false);
   const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -49,6 +56,30 @@ export default function Hero() {
   const scale = useTransform(scrollYProgress, [0, 0.78], [1, 0.94]);
   const opacity = useTransform(scrollYProgress, [0.2, 0.82], [1, 0.16]);
   const rotate = useTransform(scrollYProgress, [0, 1], [-6, 5]);
+
+  useEffect(() => {
+    if (!contactOpen) return;
+
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") setContactOpen(false);
+    }
+
+    function closeOnOutsideClick(event: PointerEvent) {
+      if (
+        contactMenuRef.current &&
+        !contactMenuRef.current.contains(event.target as Node)
+      ) {
+        setContactOpen(false);
+      }
+    }
+
+    document.addEventListener("keydown", closeOnEscape);
+    document.addEventListener("pointerdown", closeOnOutsideClick);
+    return () => {
+      document.removeEventListener("keydown", closeOnEscape);
+      document.removeEventListener("pointerdown", closeOnOutsideClick);
+    };
+  }, [contactOpen]);
 
   return (
     <section
@@ -158,17 +189,106 @@ export default function Hero() {
                 <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#d7ff43]">
                   Based in Tempe, Arizona
                 </p>
-                <p className="mt-2 text-sm text-white/75">
-                  Open to data, analytics, and ML opportunities.
+                <p className="mt-2 inline-flex items-center gap-2 rounded-full border border-[#d7ff43]/35 bg-[#d7ff43]/10 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-[#d7ff43]">
+                  <span className="h-2 w-2 rounded-full bg-[#d7ff43]" />
+                  Open to work
                 </p>
               </div>
             </div>
-            <a
-              href="mailto:sanjayso@asu.edu"
-              className="absolute -bottom-5 -left-5 flex items-center gap-2 rounded-full bg-[#ff6b4a] px-5 py-3 text-sm font-black text-[#111413] shadow-xl transition hover:-translate-y-1"
+            <div
+              ref={contactMenuRef}
+              className="absolute -bottom-5 -left-5 z-20"
             >
-              Let&apos;s talk <ArrowUpRight size={16} />
-            </a>
+              <button
+                type="button"
+                aria-expanded={contactOpen}
+                aria-controls="hero-contact-options"
+                onClick={() => setContactOpen((open) => !open)}
+                className="flex items-center gap-2 rounded-full bg-[#ff6b4a] px-5 py-3 text-sm font-black text-[#111413] shadow-xl transition hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+              >
+                Let&apos;s talk{" "}
+                <ArrowUpRight
+                  size={16}
+                  className={`transition-transform ${contactOpen ? "rotate-90" : ""}`}
+                  aria-hidden="true"
+                />
+              </button>
+
+              <AnimatePresence>
+                {contactOpen && (
+                  <motion.div
+                    id="hero-contact-options"
+                    role="dialog"
+                    aria-label="Contact options"
+                    initial={{ opacity: 0, y: 12, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.97 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute bottom-16 left-0 w-72 overflow-hidden rounded-[1.5rem] border border-[#111413]/10 bg-[#f4f0e7] p-3 text-[#111413] shadow-2xl"
+                  >
+                    <div className="flex items-center justify-between px-2 pb-2">
+                      <p className="font-mono text-[9px] font-black uppercase tracking-[0.14em] text-[#5e6965]">
+                        Choose a channel
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setContactOpen(false)}
+                        aria-label="Close contact options"
+                        className="grid h-7 w-7 place-items-center rounded-full hover:bg-[#111413]/10"
+                      >
+                        <X size={14} aria-hidden="true" />
+                      </button>
+                    </div>
+
+                    {[
+                      {
+                        href: "mailto:sanjayso@asu.edu",
+                        label: "Email",
+                        detail: "sanjayso@asu.edu",
+                        icon: Mail,
+                      },
+                      {
+                        href: "tel:4803599244",
+                        label: "Phone",
+                        detail: "480 359 9244",
+                        icon: Phone,
+                      },
+                      {
+                        href: "https://linkedin.com/in/sanjay-soralamavu-dev",
+                        label: "LinkedIn",
+                        detail: "View profile",
+                        icon: Linkedin,
+                        external: true,
+                      },
+                    ].map(({ href, label, detail, icon: Icon, external }) => (
+                      <a
+                        key={label}
+                        href={href}
+                        target={external ? "_blank" : undefined}
+                        rel={external ? "noopener noreferrer" : undefined}
+                        onClick={() => setContactOpen(false)}
+                        className="group flex items-center gap-3 rounded-2xl p-3 transition hover:bg-[#d7ff43]"
+                      >
+                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#111413] text-[#d7ff43]">
+                          <Icon size={15} aria-hidden="true" />
+                        </span>
+                        <span>
+                          <span className="block text-sm font-black">{label}</span>
+                          <span className="mt-0.5 block text-xs text-[#5e6965] group-hover:text-[#111413]/65">
+                            {detail}
+                          </span>
+                        </span>
+                        <ArrowUpRight
+                          size={14}
+                          className="ml-auto opacity-45"
+                          aria-hidden="true"
+                        />
+                      </a>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </motion.div>
         </motion.div>
 
