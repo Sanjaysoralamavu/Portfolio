@@ -8,9 +8,15 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { ArrowDown, Download, MapPin, MousePointer2 } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, Download } from "lucide-react";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
+const proof = [
+  { value: "3.34M", label: "transactions evaluated" },
+  { value: "250", label: "automated tests" },
+  { value: "+30%", label: "process efficiency" },
+] as const;
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -19,161 +25,128 @@ export default function Hero() {
     target: sectionRef,
     offset: ["start start", "end start"],
   });
-  const heroScale = useTransform(scrollYProgress, [0, 0.72], [1, 0.92]);
-  const heroOpacity = useTransform(scrollYProgress, [0.08, 0.78], [1, 0.18]);
-  const copyY = useTransform(scrollYProgress, [0, 0.75], [0, -72]);
-  const portraitY = useTransform(scrollYProgress, [0, 0.75], [0, 72]);
-  const orbitRotate = useTransform(scrollYProgress, [0, 1], [0, 54]);
+  const contentY = useTransform(scrollYProgress, [0, 0.75], [0, -70]);
+  const portraitY = useTransform(scrollYProgress, [0, 0.75], [0, 80]);
+  const scale = useTransform(scrollYProgress, [0, 0.78], [1, 0.94]);
+  const opacity = useTransform(scrollYProgress, [0.2, 0.82], [1, 0.16]);
+  const rotate = useTransform(scrollYProgress, [0, 1], [-6, 5]);
 
   return (
     <section
       ref={sectionRef}
       id="top"
-      className="relative h-[150svh] border-b border-[#173138]/10 bg-[#eaf1ef]"
+      className="relative h-[155svh] bg-[#111413] text-[#f4f0e7]"
     >
       <div className="sticky top-[65px] flex min-h-[calc(100svh-65px)] items-center overflow-hidden">
         <div className="story-grid absolute inset-0" aria-hidden="true" />
-        <div
-          className="absolute -right-40 top-1/2 h-[36rem] w-[36rem] -translate-y-1/2 rounded-full border border-[#00899a]/15"
-          aria-hidden="true"
-        />
-        <motion.div
-          style={{ rotate: reduceMotion ? 0 : orbitRotate }}
-          className="pointer-events-none absolute -right-24 top-1/2 hidden h-[29rem] w-[29rem] -translate-y-1/2 rounded-full border border-dashed border-[#e57356]/35 lg:block"
-          aria-hidden="true"
-        >
-          <span className="absolute left-1/2 top-[-7px] h-3.5 w-3.5 rounded-full bg-[#e57356]" />
-          <span className="absolute bottom-10 left-8 h-2.5 w-2.5 rounded-full bg-[#00899a]" />
-        </motion.div>
-
         <motion.div
           style={{
-            scale: reduceMotion ? 1 : heroScale,
-            opacity: reduceMotion ? 1 : heroOpacity,
+            scale: reduceMotion ? 1 : scale,
+            opacity: reduceMotion ? 1 : opacity,
           }}
-          className="relative mx-auto grid w-full max-w-7xl gap-12 px-5 py-14 sm:px-8 lg:grid-cols-[1.05fr_.95fr] lg:items-center lg:py-20"
+          className="relative mx-auto grid w-full max-w-7xl gap-10 px-5 py-10 sm:px-8 lg:grid-cols-[1.08fr_.92fr] lg:items-center lg:gap-16"
         >
           <motion.div
-            style={{ y: reduceMotion ? 0 : copyY }}
-            className="relative z-10 max-w-2xl"
+            style={{ y: reduceMotion ? 0 : contentY }}
+            className="relative z-10 min-w-0"
           >
-            <motion.p
-              initial={false}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="eyebrow"
-            >
-              Data analyst · Automation specialist
-            </motion.p>
-
-            <motion.h1
-              initial={false}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.08 }}
-              className="mt-5 text-5xl font-black uppercase leading-[0.9] tracking-[0.03em] text-[#173138] sm:text-7xl lg:text-[5.6rem]"
-            >
-              Sanjay
-              <br />
-              <span className="text-[#00899a]">
-                S Dev<span className="text-[#e57356]">.</span>
+            <div className="flex flex-wrap items-center gap-3 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-white/55">
+              <span className="rounded-full border border-white/20 px-3 py-2 text-[#d7ff43]">
+                Sanjay S Dev
               </span>
-            </motion.h1>
+              <span>Data · ML · Automation</span>
+            </div>
 
-            <motion.div
-              initial={false}
-              animate={{ opacity: 1, scaleX: 1 }}
-              transition={{ duration: 0.65, delay: 0.18 }}
-              className="mt-7 h-1 w-16 origin-left bg-[#e57356]"
-            />
+            <h1 className="font-display mt-7 max-w-4xl text-[clamp(4.3rem,9.2vw,8.7rem)] font-normal leading-[0.78] tracking-[-0.065em]">
+              I make data
+              <span className="block italic text-[#d7ff43]">usable.</span>
+            </h1>
 
-            <motion.p
-              initial={false}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, delay: 0.22 }}
-              className="mt-7 max-w-xl text-lg leading-8 text-[#52656a]"
-            >
-              I turn scattered data into resilient systems, clear dashboards,
-              and automation that helps teams decide what to do next.
-            </motion.p>
+            <p className="mt-8 max-w-xl text-lg leading-8 text-white/68 sm:text-xl">
+              I build data systems and machine-learning products that turn
+              messy inputs into clear decisions.
+            </p>
 
-            <motion.div
-              initial={false}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.34 }}
-              className="mt-9 flex flex-wrap gap-3"
-            >
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <a
-                href="#story"
-                className="inline-flex items-center gap-2 rounded bg-[#173138] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#00899a] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00899a]"
+                href="#projects"
+                className="inline-flex items-center justify-between gap-5 rounded-full bg-[#d7ff43] px-5 py-3.5 text-sm font-bold text-[#111413] transition hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
               >
-                Follow the story <ArrowDown size={17} aria-hidden="true" />
+                View selected work
+                <ArrowDownRight size={17} aria-hidden="true" />
               </a>
               <a
                 href={`${BASE_PATH}/resume.pdf`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded border border-[#173138]/25 bg-[#eaf1ef]/80 px-5 py-3 text-sm font-bold text-[#173138] transition hover:border-[#00899a] hover:text-[#00899a] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00899a]"
+                className="inline-flex items-center justify-between gap-5 rounded-full border border-white/25 px-5 py-3.5 text-sm font-bold text-white transition hover:border-[#8c98ff] hover:text-[#8c98ff] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
               >
-                Download resume <Download size={17} aria-hidden="true" />
+                Résumé <Download size={16} aria-hidden="true" />
               </a>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={false}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.46 }}
-              className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold text-[#52656a]"
-            >
-              <span className="flex items-center gap-2">
-                <MapPin size={16} aria-hidden="true" /> Tempe, Arizona
-              </span>
-              <a href="mailto:sanjayso@asu.edu" className="hover:text-[#00899a]">
-                sanjayso@asu.edu
-              </a>
-            </motion.div>
+            <div className="mt-10 grid max-w-2xl grid-cols-3 border-y border-white/15">
+              {proof.map((item) => (
+                <div
+                  key={item.label}
+                  className="border-r border-white/15 py-4 pr-3 last:border-r-0 sm:py-5"
+                >
+                  <p className="font-display text-2xl text-[#d7ff43] sm:text-3xl">
+                    {item.value}
+                  </p>
+                  <p className="mt-1 max-w-24 font-mono text-[8px] uppercase leading-4 tracking-[0.1em] text-white/45 sm:text-[9px]">
+                    {item.label}
+                  </p>
+                </div>
+              ))}
+            </div>
           </motion.div>
 
           <motion.div
-            style={{ y: reduceMotion ? 0 : portraitY }}
-            initial={false}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.16 }}
-            className="relative mx-auto hidden w-full max-w-md sm:block"
+            style={{
+              y: reduceMotion ? 0 : portraitY,
+              rotate: reduceMotion ? 0 : rotate,
+            }}
+            className="relative mx-auto hidden w-full max-w-[27rem] sm:block"
           >
             <div
-              className="absolute -inset-5 rounded-full border border-[#e57356]/35"
+              className="absolute -inset-5 translate-x-6 translate-y-6 rounded-[2.5rem] bg-[#8c98ff]"
               aria-hidden="true"
             />
-            <div className="relative aspect-square overflow-hidden rounded-full border-[10px] border-[#fdfefd] bg-[#173138] p-2 shadow-[16px_16px_0_#00899a]">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-white/20 bg-[#f4f0e7]">
               <Image
                 src={`${BASE_PATH}/profile-photo.png`}
                 alt="Sanjay S Dev"
                 fill
                 priority
                 sizes="(max-width: 1024px) 45vw, 430px"
-                className="rounded-full object-cover object-center p-2"
+                className="object-cover object-center grayscale-[18%]"
               />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#111413] via-[#111413]/65 to-transparent p-6 pt-24">
+                <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#d7ff43]">
+                  Based in Tempe, Arizona
+                </p>
+                <p className="mt-2 text-sm text-white/75">
+                  Open to data, analytics, and ML opportunities.
+                </p>
+              </div>
             </div>
-            <div className="absolute -left-4 bottom-10 rounded border border-[#173138]/10 bg-[#fdfefd]/95 px-4 py-3 shadow-lg backdrop-blur">
-              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#e57356]">
-                Current focus
-              </p>
-              <p className="mt-1 text-sm font-bold text-[#173138]">
-                Data systems that adapt
-              </p>
-            </div>
+            <a
+              href="mailto:sanjayso@asu.edu"
+              className="absolute -bottom-5 -left-5 flex items-center gap-2 rounded-full bg-[#ff6b4a] px-5 py-3 text-sm font-black text-[#111413] shadow-xl transition hover:-translate-y-1"
+            >
+              Let&apos;s talk <ArrowUpRight size={16} />
+            </a>
           </motion.div>
         </motion.div>
 
-        <motion.a
+        <a
           href="#story"
-          initial={false}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.9 }}
-          className="absolute bottom-5 left-1/2 flex -translate-x-1/2 items-center gap-2 text-[10px] font-black uppercase tracking-[0.18em] text-[#52656a]"
+          className="absolute bottom-5 left-1/2 flex -translate-x-1/2 items-center gap-3 font-mono text-[9px] font-bold uppercase tracking-[0.18em] text-white/45"
         >
-          <MousePointer2 size={13} aria-hidden="true" /> Scroll to explore
-        </motion.a>
+          Scroll to see the system
+          <ArrowDownRight size={13} aria-hidden="true" />
+        </a>
       </div>
     </section>
   );

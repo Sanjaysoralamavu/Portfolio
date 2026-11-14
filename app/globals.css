@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f4f6f5;
-  --foreground: #173138;
+  --ink: #111413;
+  --paper: #f4f0e7;
+  --acid: #d7ff43;
+  --cobalt: #8c98ff;
+  --signal: #ff6b4a;
+  --mint: #a7ddd1;
+  --muted: #5e6965;
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --font-display: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
 }
 
 @theme inline {
@@ -10,6 +18,11 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-display);
+}
+
+* {
+  box-sizing: border-box;
 }
 
 html {
@@ -21,77 +34,85 @@ body {
   margin: 0;
   min-height: 100vh;
   overflow-x: hidden;
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: var(--acid);
+  color: var(--ink);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.eyebrow {
+  color: currentColor;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.section-title {
+  margin-top: 1rem;
+  color: currentColor;
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 6.5vw, 6.8rem);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.88;
 }
 
 .story-grid {
   background-image:
-    linear-gradient(rgba(23, 49, 56, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(23, 49, 56, 0.05) 1px, transparent 1px),
-    radial-gradient(circle at 78% 42%, rgba(0, 137, 154, 0.12), transparent 31%),
-    radial-gradient(circle at 22% 76%, rgba(229, 115, 86, 0.09), transparent 24%);
-  background-size: 56px 56px, 56px 56px, auto, auto;
-  mask-image: linear-gradient(to bottom, black 72%, transparent);
+    linear-gradient(rgba(244, 240, 231, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(244, 240, 231, 0.07) 1px, transparent 1px),
+    radial-gradient(circle at 77% 38%, rgba(140, 152, 255, 0.24), transparent 29%),
+    radial-gradient(circle at 22% 78%, rgba(215, 255, 67, 0.12), transparent 25%);
+  background-size: 64px 64px, 64px 64px, auto, auto;
+  mask-image: linear-gradient(to bottom, black 76%, transparent);
 }
 
 .text-balance {
   text-wrap: balance;
 }
 
-::selection {
-  background: #b8e0dc;
-  color: #173138;
-}
-
-.eyebrow {
-  color: #00899a;
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-
-.section-title {
-  margin-top: 1rem;
-  color: #173138;
-  font-size: clamp(2.35rem, 5vw, 4.4rem);
-  font-weight: 900;
-  letter-spacing: 0;
-  line-height: 1.02;
-}
-
 .field-label {
   display: block;
-  color: #52656a;
-  font-size: 0.75rem;
-  font-weight: 800;
+  color: var(--ink);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .field-input {
   width: 100%;
-  margin-top: 0.6rem;
-  border: 1px solid rgba(23, 49, 56, 0.2);
-  border-radius: 0.25rem;
-  background: #f4f6f5;
-  color: #173138;
-  font-size: 0.95rem;
+  margin-top: 0.65rem;
+  border: 1px solid rgba(17, 20, 19, 0.24);
+  border-radius: 0;
+  background: rgba(244, 240, 231, 0.72);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: 1rem;
   letter-spacing: 0;
   line-height: 1.5;
-  padding: 0.75rem 0.875rem;
+  padding: 0.9rem 1rem;
 }
 
 .field-input:focus {
-  border-color: #00899a;
-  box-shadow: 0 0 0 3px rgba(0, 137, 154, 0.17);
+  border-color: var(--ink);
+  box-shadow: 5px 5px 0 var(--acid);
   outline: none;
 }
 
 .field-input::placeholder {
-  color: #7b8c90;
+  color: #737d78;
 }
 
 @media (prefers-reduced-motion: reduce) {

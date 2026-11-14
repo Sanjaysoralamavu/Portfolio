@@ -1,80 +1,74 @@
 "use client";
+
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { MapPin } from "lucide-react";
+import { ArrowUpRight, MapPin } from "lucide-react";
 import { education } from "@/lib/data";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export default function Education() {
   return (
-    <section
-      id="education"
-      className="border-y border-[#173138]/10 bg-[#e7f0ef]"
-    >
+    <section id="education" className="bg-[#a7ddd1] text-[#111413]">
       <div className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:py-32">
-
-        {/* ── Header row ─────────────────────────────────────── */}
-        <div className="grid gap-8 border-b border-[#173138]/12 pb-12 lg:grid-cols-[1fr_1.2fr] lg:items-end">
+        <div className="grid gap-8 border-b border-[#111413]/20 pb-10 lg:grid-cols-[.9fr_1.1fr] lg:items-end">
           <div>
-            <p className="eyebrow">Still learning</p>
-            <h2 className="mt-4 text-3xl font-black leading-tight text-[#173138] sm:text-4xl">
-              The work keeps teaching me,<br className="hidden sm:block" /> and so does the classroom.
+            <p className="eyebrow">Education</p>
+            <h2 className="font-display mt-5 text-6xl leading-[0.86] tracking-[-0.055em] sm:text-7xl">
+              Keep learning.
+              <span className="block italic">Keep shipping.</span>
             </h2>
           </div>
-          <p className="text-base leading-7 text-[#52656a] lg:max-w-lg lg:pb-1">
-            I&apos;m continuing to build depth in computer science while carrying
-            the practical questions from my day-to-day data work back into my studies.
+          <p className="max-w-lg text-base leading-7 text-[#111413]/65">
+            Computer science gives me the depth. Real projects make it useful.
           </p>
         </div>
 
-        {/* ── Education cards ────────────────────────────────── */}
-        <div className="mt-12 grid gap-5 lg:grid-cols-2">
-          {education.map((item, i) => (
+        <div className="mt-10 grid gap-4 lg:grid-cols-2">
+          {education.map((item, index) => (
             <motion.article
               key={item.name}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="flex flex-col gap-6 border border-[#173138]/12 bg-[#fdfefd] p-6 sm:p-8"
+              transition={{ duration: 0.45, delay: index * 0.08 }}
+              className={`relative flex min-h-80 flex-col justify-between overflow-hidden rounded-[2rem] p-7 sm:p-9 ${
+                index === 0
+                  ? "bg-[#111413] text-[#f4f0e7]"
+                  : "bg-[#f4f0e7] text-[#111413]"
+              }`}
             >
-              {/* Top: logo + status + school */}
-              <div className="flex items-start gap-4">
-                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded border border-[#173138]/10 bg-white">
+              <div className="flex items-start justify-between gap-4">
+                <div className="relative h-16 w-16 overflow-hidden rounded-2xl bg-white">
                   <Image
                     src={`${BASE_PATH}${item.logo}`}
                     alt={item.name}
                     fill
-                    sizes="56px"
-                    className="object-contain p-1.5"
+                    sizes="64px"
+                    className="object-contain p-2"
                   />
                 </div>
-                <div className="min-w-0">
-                  <p className="text-xs font-black uppercase tracking-[0.12em] text-[#e57356]">
-                    {item.status}
-                  </p>
-                  <h3 className="mt-1 text-base font-black leading-snug text-[#173138]">
-                    {item.name}
-                  </h3>
-                  <p className="mt-1 text-sm font-semibold text-[#00899a]">
-                    {item.degree} · {item.field}
-                  </p>
-                </div>
+                <ArrowUpRight size={22} aria-hidden="true" />
               </div>
 
-              {/* Bottom: period + location */}
-              <div className="flex items-center justify-between border-t border-[#173138]/10 pt-5 text-sm text-[#52656a]">
-                <span className="font-semibold">{item.period}</span>
-                <span className="flex items-center gap-1">
-                  <MapPin size={13} aria-hidden="true" />
-                  {item.location}
-                </span>
+              <div className="relative z-10 mt-14">
+                <p className={`font-mono text-[9px] font-black uppercase tracking-[0.14em] ${index === 0 ? "text-[#d7ff43]" : "text-[#6a75ef]"}`}>
+                  {item.status} · {item.period}
+                </p>
+                <h3 className="font-display mt-4 text-4xl leading-[0.95] tracking-[-0.035em] sm:text-5xl">
+                  {item.degree}
+                  <span className="block italic">{item.field}</span>
+                </h3>
+                <div className={`mt-6 flex flex-wrap items-center justify-between gap-3 border-t pt-5 text-sm ${index === 0 ? "border-white/15 text-white/55" : "border-[#111413]/15 text-[#111413]/60"}`}>
+                  <span>{item.name}</span>
+                  <span className="flex items-center gap-1.5">
+                    <MapPin size={13} /> {item.location}
+                  </span>
+                </div>
               </div>
             </motion.article>
           ))}
         </div>
-
       </div>
     </section>
   );

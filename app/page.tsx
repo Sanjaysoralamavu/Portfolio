@@ -22,40 +22,40 @@ export default function Home() {
   return (
     <MotionConfig reducedMotion="user">
       <main className="min-h-screen overflow-clip">
-      {/* Skip to content */}
-      <a
-        href="#content"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-5 focus:top-5 focus:z-[60] focus:rounded focus:bg-[#173138] focus:px-4 focus:py-3 focus:text-white dark:focus:bg-[#00899a]"
-      >
-        Skip to content
-      </a>
+        <a
+          href="#content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-5 focus:top-5 focus:z-[60] focus:rounded-full focus:bg-[#d7ff43] focus:px-4 focus:py-3 focus:text-[#111413]"
+        >
+          Skip to content
+        </a>
 
-      <SiteHeader progress={progress} />
-      <ScrollStoryNav />
+        <SiteHeader progress={progress} />
+        <ScrollStoryNav />
 
-      <Hero />
+        <Hero />
 
-      <section id="content">
-        <Story />
-        <ScrollTicker text="Raw data · Clear systems · Useful decisions" />
-        <ExperienceSection />
-        <Projects />
-        <ScrollTicker text="Build · Test · Explain · Improve" dark />
-        <Skills />
-        <Education />
-        <Contact />
-      </section>
+        <section id="content">
+          <Story />
+          <ScrollTicker text="3.34M transactions · 250 tests · 0.953 adaptive F1 · +30% efficiency" />
+          <Projects />
+          <ExperienceSection />
+          <Skills />
+          <Education />
+          <Contact />
+        </section>
 
-      <footer className="border-t border-[#173138]/10 bg-[#fdfefd]">
-        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-8">
-          <p className="text-sm font-bold">Sanjay S Dev</p>
-          <div className="flex items-center gap-5">
+        <footer className="border-t border-white/10 bg-[#111413] text-[#f4f0e7]">
+          <div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.16em]">
+              Sanjay S Dev · Built with intent
+            </p>
+            <div className="flex items-center gap-5">
             <a
               href="https://linkedin.com/in/sanjay-soralamavu-dev"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
-              className="text-[#52656a] hover:text-[#00899a]"
+              className="text-white/55 hover:text-[#d7ff43]"
             >
               <Linkedin size={20} />
             </a>
@@ -64,7 +64,7 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
-              className="text-[#52656a] hover:text-[#00899a]"
+              className="text-white/55 hover:text-[#d7ff43]"
             >
               <Github size={20} />
             </a>
@@ -73,23 +73,22 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
-              className="text-[#52656a] hover:text-[#00899a]"
+              className="text-white/55 hover:text-[#d7ff43]"
             >
               <Instagram size={20} />
             </a>
             <a
               href="mailto:sanjayso@asu.edu"
               aria-label="Email Sanjay"
-              className="text-[#52656a] hover:text-[#00899a]"
+              className="text-white/55 hover:text-[#d7ff43]"
             >
               <Mail size={20} />
             </a>
+            </div>
           </div>
-        </div>
-      </footer>
+        </footer>
 
-      {/* Floating scroll-to-top button */}
-      <ScrollToTop />
+        <ScrollToTop />
       </main>
     </MotionConfig>
   );

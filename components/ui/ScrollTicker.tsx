@@ -22,18 +22,18 @@ export default function ScrollTicker({
     <section
       ref={sectionRef}
       aria-hidden="true"
-      className={`overflow-hidden border-y py-7 sm:py-10 ${
+      className={`overflow-hidden border-y py-6 sm:py-8 ${
         dark
-          ? "border-white/15 bg-[#173138] text-white"
-          : "border-[#173138]/10 bg-[#e7f0ef] text-[#173138]"
+          ? "border-white/15 bg-[#111413] text-white"
+          : "border-[#111413] bg-[#d7ff43] text-[#111413]"
       }`}
     >
       <motion.p
         style={{ x: prefersReducedMotion ? "0%" : x }}
-        className="w-max whitespace-nowrap text-[clamp(3rem,9vw,8rem)] font-black uppercase leading-none tracking-[-0.06em]"
+        className="font-display w-max whitespace-nowrap text-[clamp(3.2rem,8vw,7.5rem)] leading-none tracking-[-0.055em]"
       >
-        {text} <span className="text-[#e57356]">↗</span> {text} {" "}
-        <span className={dark ? "text-[#a7d9d7]" : "text-[#00899a]"}>{text}</span>
+        {text} <span className="text-[#ff6b4a]">↗</span> {text}{" "}
+        <span className={dark ? "text-[#8c98ff]" : "text-[#6a75ef]"}>{text}</span>
       </motion.p>
     </section>
   );

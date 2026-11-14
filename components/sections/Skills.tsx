@@ -1,83 +1,96 @@
 "use client";
+
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import SectionHeading from "@/components/ui/SectionHeading";
-import { skills, skillCategories, type SkillCategory } from "@/lib/data";
+import { skillCategories, skills, type SkillCategory } from "@/lib/data";
+
+const skillColors = [
+  "bg-[#d7ff43]",
+  "bg-[#8c98ff]",
+  "bg-[#ff6b4a]",
+  "bg-[#a7ddd1]",
+] as const;
 
 export default function Skills() {
   const [skillFilter, setSkillFilter] = useState<SkillCategory>("All");
-
   const filtered =
     skillFilter === "All"
       ? skills
-      : skills.filter((s) => s.category === skillFilter);
+      : skills.filter((skill) => skill.category === skillFilter);
 
   return (
-    <section
-      id="skills"
-      className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:py-32"
-    >
-      {/* Header row */}
-      <div className="mb-12 flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
-        <SectionHeading
-          eyebrow="What I reach for"
-          title="A practical toolkit, built one problem at a time."
-          copy="These are the tools I've used to turn a question into a working system, a clearer report, or an easier next step."
-        />
+    <section id="skills" className="bg-[#f4f0e7] text-[#111413]">
+      <div className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:py-32">
+        <div className="grid gap-10 lg:grid-cols-[.72fr_1.28fr] lg:gap-16">
+          <div className="lg:sticky lg:top-28 lg:h-fit">
+            <p className="eyebrow">Toolkit</p>
+            <h2 className="font-display mt-5 text-6xl leading-[0.86] tracking-[-0.055em] sm:text-7xl">
+              Tools follow
+              <span className="block italic text-[#6a75ef]">the problem.</span>
+            </h2>
+            <p className="mt-7 max-w-sm text-base leading-7 text-[#5e6965]">
+              I choose the smallest reliable stack that can move the work from
+              raw input to a maintained result.
+            </p>
 
-        {/* Filter buttons */}
-        <div
-          className="flex max-w-xl flex-wrap gap-2"
-          aria-label="Filter skills by category"
-        >
-          {skillCategories.map((category) => (
-            <button
-              key={category}
-              type="button"
-              onClick={() => setSkillFilter(category)}
-              aria-pressed={skillFilter === category}
-              className={`rounded border px-3 py-2 text-xs font-bold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00899a] ${
-                skillFilter === category
-                  ? "border-[#00899a] bg-[#00899a] text-white"
-                  : "border-[#173138]/15 bg-white text-[#52656a] hover:border-[#00899a]"
-              }`}
+            <div
+              className="mt-9 flex max-w-md flex-wrap gap-2"
+              aria-label="Filter skills by category"
             >
-              {category}
-            </button>
-          ))}
+              {skillCategories.map((category) => (
+                <button
+                  key={category}
+                  type="button"
+                  onClick={() => setSkillFilter(category)}
+                  aria-pressed={skillFilter === category}
+                  className={`rounded-full border px-3.5 py-2 font-mono text-[9px] font-black uppercase tracking-[0.1em] transition ${
+                    skillFilter === category
+                      ? "border-[#111413] bg-[#111413] text-white"
+                      : "border-[#111413]/20 hover:border-[#111413]"
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <motion.div layout className="grid gap-3 sm:grid-cols-2">
+            <AnimatePresence mode="popLayout">
+              {filtered.map((skill, index) => (
+                <motion.article
+                  layout
+                  key={skill.name}
+                  initial={{ opacity: 0, y: 20, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.3, delay: index * 0.025 }}
+                  className={`${skillColors[index % skillColors.length]} group relative min-h-52 overflow-hidden rounded-[1.5rem] p-6`}
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <p className="font-mono text-[9px] font-black uppercase tracking-[0.12em] text-[#111413]/55">
+                      {skill.category}
+                    </p>
+                    <span className="font-mono text-[9px] font-black">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <h3 className="font-display mt-10 text-4xl leading-none tracking-[-0.035em]">
+                    {skill.name}
+                  </h3>
+                  <p className="mt-4 max-w-sm text-sm leading-6 text-[#111413]/65">
+                    {skill.desc}
+                  </p>
+                  <span
+                    className="absolute bottom-0 left-0 h-1 w-0 bg-[#111413] transition-all duration-500 group-hover:w-full"
+                    aria-hidden="true"
+                  />
+                </motion.article>
+              ))}
+            </AnimatePresence>
+          </motion.div>
         </div>
       </div>
-
-      {/* Skill grid */}
-      <motion.div layout className="grid gap-px overflow-hidden border border-[#173138]/15 bg-[#173138]/15 sm:grid-cols-2 lg:grid-cols-4">
-        <AnimatePresence mode="popLayout">
-        {filtered.map((skill, index) => (
-          <motion.article
-            layout
-            key={skill.name}
-            initial={{ opacity: 0, y: 22 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96 }}
-            transition={{ duration: 0.35, delay: index * 0.035 }}
-            className="group relative min-h-52 overflow-hidden bg-[#f4f6f5] p-5 transition-colors hover:bg-[#e7f0ef]"
-          >
-            <span
-              className="absolute -bottom-5 right-1 text-7xl font-black text-[#173138]/[0.035] transition-transform group-hover:-translate-y-2"
-              aria-hidden="true"
-            >
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <p className="text-xs font-bold uppercase tracking-[0.13em] text-[#e57356]">
-              {skill.category}
-            </p>
-            <h3 className="mt-7 text-xl font-black">{skill.name}</h3>
-            <p className="mt-3 text-sm leading-6 text-[#52656a]">
-              {skill.desc}
-            </p>
-          </motion.article>
-        ))}
-        </AnimatePresence>
-      </motion.div>
     </section>
   );
 }

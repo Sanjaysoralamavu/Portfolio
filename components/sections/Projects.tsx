@@ -6,6 +6,13 @@ import { ArrowDown, ArrowUpRight, Github } from "lucide-react";
 import { projects } from "@/lib/data";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const projectColors = [
+  "bg-[#d7ff43]",
+  "bg-[#8c98ff]",
+  "bg-[#f4f0e7]",
+  "bg-[#ff6b4a]",
+  "bg-[#a7ddd1]",
+] as const;
 
 export default function Projects() {
   const [openSlug, setOpenSlug] = useState<string | null>(null);
@@ -13,27 +20,27 @@ export default function Projects() {
   return (
     <section
       id="projects"
-      className="bg-[#173138] text-white"
+      className="bg-[#111413] text-[#f4f0e7]"
       aria-labelledby="projects-heading"
     >
       <div className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:py-32">
         {/* Header */}
-        <div className="grid gap-10 border-b border-white/20 pb-12 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
+        <div className="grid gap-10 border-b border-white/15 pb-12 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-[#a7d9d7]">
-              A few things I&apos;ve made
+            <p className="eyebrow text-[#d7ff43]">
+              Selected work
             </p>
             <h2
               id="projects-heading"
-              className="mt-5 text-2xl font-black leading-snug sm:text-3xl"
+              className="font-display mt-5 max-w-xl text-5xl leading-[0.9] tracking-[-0.045em] sm:text-6xl lg:text-7xl"
             >
-              Ideas become more powerful when people can actually use them.
+              Evidence,<br />
+              not decoration.
             </h2>
           </div>
-          <p className="max-w-xl border-l border-[#e57356] pl-6 text-lg leading-8 text-white/75">
-            These projects are where structured thinking meets clear
-            communication. Each one begins with something complex and ends with
-            something people can work with.
+          <p className="max-w-xl border-l border-[#ff6b4a] pl-6 text-lg leading-8 text-white/65">
+            Five projects. Each one shows the problem, the system, and the result.
+            Open any card for the full case study.
           </p>
         </div>
 
@@ -49,31 +56,31 @@ export default function Projects() {
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.6, delay: index * 0.04 }}
                 style={{ top: `calc(5.25rem + ${index * 10}px)`, zIndex: index + 1 }}
-                className="relative bg-[#173138] lg:sticky"
+                className="relative bg-[#111413] lg:sticky"
               >
                 <div
-                  className="group relative min-h-[330px] overflow-hidden border border-white/25 bg-[#204149] p-6 text-left shadow-[0_-18px_45px_rgba(9,25,29,0.16)] transition duration-300 hover:border-[#a7d9d7] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white sm:p-8 lg:min-h-[360px]"
+                  className={`group relative min-h-[360px] overflow-hidden rounded-[2rem] border border-white/10 p-7 text-left text-[#111413] shadow-[0_-18px_55px_rgba(0,0,0,0.2)] transition duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white sm:p-10 lg:min-h-[390px] ${projectColors[index % projectColors.length]}`}
                 >
                   <span
-                    className="pointer-events-none absolute -bottom-12 right-3 text-[11rem] font-black leading-none text-white/[0.035] sm:text-[15rem]"
+                    className="font-display pointer-events-none absolute -bottom-14 right-3 text-[12rem] leading-none text-[#111413]/[0.06] sm:text-[17rem]"
                     aria-hidden="true"
                   >
                     {project.number}
                   </span>
                   <span
-                    className="absolute right-0 top-0 h-20 w-20 translate-x-10 -translate-y-10 rounded-full bg-[#00899a]/25 transition-transform duration-300 group-hover:translate-x-6 group-hover:-translate-y-6"
+                    className="absolute right-0 top-0 h-28 w-28 translate-x-12 -translate-y-12 rounded-full bg-[#111413]/10 transition-transform duration-300 group-hover:translate-x-7 group-hover:-translate-y-7"
                     aria-hidden="true"
                   />
                   <div className="relative flex h-full flex-col">
                     <div className="flex items-start justify-between gap-5">
                       <div>
-                        <p className="text-xs font-black uppercase tracking-[0.18em] text-[#e57356]">
+                        <p className="font-mono text-[10px] font-black uppercase tracking-[0.16em] text-[#111413]/60">
                           Project {project.number}
                         </p>
-                        <h3 className="mt-4 text-2xl font-black leading-tight text-white sm:text-3xl">
+                        <h3 className="font-display mt-5 max-w-3xl text-4xl leading-[0.95] tracking-[-0.04em] text-[#111413] sm:text-5xl">
                           {project.title}
                         </h3>
-                        <p className="mt-3 max-w-xl text-sm leading-7 text-white/70">
+                        <p className="mt-5 max-w-2xl text-sm leading-7 text-[#111413]/65">
                           {project.org} · {project.teaser}
                         </p>
                       </div>
@@ -83,7 +90,7 @@ export default function Projects() {
                         aria-expanded={isOpen}
                         aria-controls={`project-${project.slug}`}
                         onClick={() => setOpenSlug(isOpen ? null : project.slug)}
-                        className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-white/25 text-[#a7d9d7] transition hover:bg-[#a7d9d7] hover:text-[#173138] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                        className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-[#111413]/30 text-[#111413] transition hover:bg-[#111413] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#111413]"
                       >
                         <ArrowDown
                           size={18}
@@ -96,9 +103,9 @@ export default function Projects() {
                     </div>
 
                     <div className="mt-auto pt-8">
-                      <div className="flex flex-wrap items-center gap-3 border-t border-white/15 pt-5 text-xs font-bold uppercase tracking-[0.1em] text-white/65">
+                      <div className="flex flex-wrap items-center gap-3 border-t border-[#111413]/20 pt-5 font-mono text-[9px] font-bold uppercase tracking-[0.1em] text-[#111413]/60">
                         <span>{project.date}</span>
-                        <span className="h-1 w-1 rounded-full bg-[#e57356]" />
+                        <span className="h-1 w-1 rounded-full bg-[#111413]" />
                         <span>{project.feedback}</span>
                       </div>
                       <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
@@ -107,7 +114,7 @@ export default function Projects() {
                           aria-expanded={isOpen}
                           aria-controls={`project-${project.slug}`}
                           onClick={() => setOpenSlug(isOpen ? null : project.slug)}
-                          className="text-sm font-bold text-[#a7d9d7] underline-offset-4 transition hover:text-white hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                          className="text-sm font-bold text-[#111413] underline-offset-4 transition hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#111413]"
                         >
                           {isOpen
                             ? "Close this story"
@@ -118,7 +125,7 @@ export default function Projects() {
                             href={project.repository}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 text-sm font-bold text-white/80 underline-offset-4 transition hover:text-[#a7d9d7] hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                            className="inline-flex items-center gap-2 text-sm font-bold text-[#111413]/75 underline-offset-4 transition hover:text-[#111413] hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#111413]"
                           >
                             <Github size={16} aria-hidden="true" /> GitHub repository
                           </a>
@@ -136,13 +143,13 @@ export default function Projects() {
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.35, ease: "easeOut" }}
-                      className="relative z-20 overflow-hidden bg-[#173138] py-8"
+                      className="relative z-20 overflow-hidden bg-[#111413] py-10"
                       aria-labelledby={`${project.slug}-title`}
                     >
                 <div className="grid gap-8 lg:grid-cols-[.8fr_1.2fr]">
                   {/* Left meta */}
                   <div>
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-[#e57356]">
+                    <p className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-[#ff6b4a]">
                       Project {project.number} / {project.date}
                     </p>
                     <h3
@@ -165,14 +172,14 @@ export default function Projects() {
                       </div>
                       <div className="flex items-center justify-between gap-4 py-3">
                         <dt className="text-white/55">Result</dt>
-                        <dd className="font-bold text-[#a7d9d7]">{project.rating}</dd>
+                        <dd className="font-bold text-[#d7ff43]">{project.rating}</dd>
                       </div>
                     </dl>
                   </div>
 
                   {/* Right body */}
                   <div className="border border-white/20 bg-white/[0.06] p-6 sm:p-8">
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-[#a7d9d7]">
+                    <p className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-[#d7ff43]">
                       The starting point
                     </p>
                     <p className="mt-4 text-xl font-bold leading-8 text-white">
@@ -180,13 +187,13 @@ export default function Projects() {
                     </p>
                     <div className="mt-8 grid gap-8 md:grid-cols-2">
                       <div>
-                        <p className="text-xs font-black uppercase tracking-[0.16em] text-[#e57356]">
+                        <p className="font-mono text-[10px] font-black uppercase tracking-[0.16em] text-[#ff6b4a]">
                           How I approached it
                         </p>
                         <p className="mt-3 text-sm leading-7 text-white/70">{project.approach}</p>
                       </div>
                       <div>
-                        <p className="text-xs font-black uppercase tracking-[0.16em] text-[#e57356]">
+                        <p className="font-mono text-[10px] font-black uppercase tracking-[0.16em] text-[#ff6b4a]">
                           What I left behind
                         </p>
                         <p className="mt-3 text-sm leading-7 text-white/70">{project.deliverables}</p>
@@ -201,12 +208,12 @@ export default function Projects() {
                     {project.metrics.map((metric) => (
                       <div
                         key={metric.label}
-                        className="bg-[#173138] p-5 sm:p-6"
+                        className="bg-[#111413] p-5 sm:p-6"
                       >
                         <dt className="text-xs font-bold uppercase tracking-[0.14em] text-white/55">
                           {metric.label}
                         </dt>
-                        <dd className="mt-3 text-3xl font-black text-[#a7d9d7]">
+                        <dd className="font-display mt-3 text-4xl text-[#d7ff43]">
                           {metric.value}
                         </dd>
                       </div>
@@ -233,7 +240,7 @@ export default function Projects() {
                 {/* Process steps */}
                 <div className="mt-10 grid gap-8 border-y border-white/20 py-10 lg:grid-cols-[.8fr_1.2fr]">
                   <div>
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-[#a7d9d7]">
+                    <p className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-[#d7ff43]">
                       {project.processEyebrow ?? "Making the idea visible"}
                     </p>
                     <h4 className="mt-4 text-2xl font-black leading-8">
@@ -244,7 +251,7 @@ export default function Projects() {
                   <ol className="grid gap-4 sm:grid-cols-2">
                     {project.process.map((step, i) => (
                       <li key={step.label} className="border-t border-white/20 pt-4">
-                        <p className="text-xs font-black text-[#e57356]">
+                        <p className="font-mono text-[10px] font-black text-[#ff6b4a]">
                           {String(i + 1).padStart(2, "0")} / {step.label}
                         </p>
                         <p className="mt-2 text-sm leading-6 text-white/75">{step.body}</p>
@@ -256,7 +263,7 @@ export default function Projects() {
                 {/* Footer: skills + CTA */}
                 <div className="mt-10 flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
                   <div>
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-[#a7d9d7]">
+                    <p className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-[#d7ff43]">
                       Tech stack &amp; skills
                     </p>
                     <div className="mt-4 flex flex-wrap gap-2">
@@ -276,7 +283,7 @@ export default function Projects() {
                         href={project.repository}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 rounded bg-[#a7d9d7] px-5 py-3 text-sm font-bold text-[#173138] transition hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                        className="inline-flex items-center justify-center gap-2 rounded-full bg-[#d7ff43] px-5 py-3 text-sm font-bold text-[#111413] transition hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
                       >
                         <Github size={17} aria-hidden="true" /> View repository
                       </a>
@@ -286,7 +293,7 @@ export default function Projects() {
                         href={`${BASE_PATH}${project.certificate}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 rounded bg-[#e57356] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#f18668] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                        className="inline-flex items-center justify-center gap-2 rounded-full bg-[#ff6b4a] px-5 py-3 text-sm font-bold text-[#111413] transition hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
                       >
                         View certificate <ArrowUpRight size={17} aria-hidden="true" />
                       </a>
@@ -296,9 +303,9 @@ export default function Projects() {
 
                 {/* Quote */}
                 {project.quote && (
-                  <blockquote className="mt-10 border-l-2 border-[#a7d9d7] pl-6 text-lg leading-8 text-white/85">
+                  <blockquote className="mt-10 border-l-2 border-[#d7ff43] pl-6 text-lg leading-8 text-white/85">
                     {project.quote.text}
-                    <footer className="mt-3 text-sm font-bold text-[#a7d9d7]">
+                    <footer className="mt-3 text-sm font-bold text-[#d7ff43]">
                       {project.quote.author}
                     </footer>
                   </blockquote>

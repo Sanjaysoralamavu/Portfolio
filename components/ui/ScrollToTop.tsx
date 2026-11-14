@@ -22,7 +22,7 @@ export default function ScrollToTop() {
           transition={{ duration: 0.25 }}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           aria-label="Scroll to top"
-          className="fixed bottom-6 right-6 z-50 grid h-11 w-11 place-items-center rounded-full bg-[#173138] text-white shadow-lg transition hover:bg-[#00899a] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00899a]"
+          className="fixed bottom-6 right-6 z-50 grid h-12 w-12 place-items-center rounded-full border border-white/15 bg-[#111413] text-[#d7ff43] shadow-xl transition hover:-translate-y-1 hover:bg-[#6a75ef] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d7ff43]"
         >
           <ArrowUp size={20} aria-hidden="true" />
         </motion.button>
