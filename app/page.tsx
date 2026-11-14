@@ -36,7 +36,7 @@ export default function Home() {
 
         <section id="content">
           <Story />
-          <ScrollTicker text="3.34M transactions · 250 tests · 0.953 adaptive F1 · +30% efficiency" />
+          <ScrollTicker text="Data systems · Adaptive ML · Decision tools" />
           <Projects />
           <ExperienceSection />
           <Skills />

@@ -8,14 +8,33 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { ArrowDownRight, ArrowUpRight, Download } from "lucide-react";
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  Database,
+  Download,
+  Gauge,
+  Workflow,
+} from "lucide-react";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
-const proof = [
-  { value: "3.34M", label: "transactions evaluated" },
-  { value: "250", label: "automated tests" },
-  { value: "+30%", label: "process efficiency" },
+const capabilities = [
+  {
+    label: "Messy inputs",
+    detail: "Exports · streams",
+    icon: Database,
+  },
+  {
+    label: "Trusted systems",
+    detail: "Models · automation",
+    icon: Workflow,
+  },
+  {
+    label: "Clear action",
+    detail: "Tools · decisions",
+    icon: Gauge,
+  },
 ] as const;
 
 export default function Hero() {
@@ -86,19 +105,32 @@ export default function Hero() {
             </div>
 
             <div className="mt-10 grid max-w-2xl grid-cols-3 border-y border-white/15">
-              {proof.map((item) => (
-                <div
-                  key={item.label}
-                  className="border-r border-white/15 py-4 pr-3 last:border-r-0 sm:py-5"
-                >
-                  <p className="font-display text-2xl text-[#d7ff43] sm:text-3xl">
-                    {item.value}
-                  </p>
-                  <p className="mt-1 max-w-24 font-mono text-[8px] uppercase leading-4 tracking-[0.1em] text-white/45 sm:text-[9px]">
-                    {item.label}
-                  </p>
-                </div>
-              ))}
+              {capabilities.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.label}
+                    className="relative min-w-0 border-r border-white/15 px-2 py-4 first:pl-0 last:border-r-0 sm:px-4 sm:py-5"
+                  >
+                    <div className="flex items-center gap-2 text-[#d7ff43]">
+                      <Icon size={15} aria-hidden="true" />
+                      <span className="font-mono text-[8px] font-black uppercase tracking-[0.1em] sm:text-[9px]">
+                        {item.label}
+                      </span>
+                    </div>
+                    <p className="mt-2 font-mono text-[7px] uppercase leading-4 tracking-[0.08em] text-white/40 sm:text-[8px]">
+                      {item.detail}
+                    </p>
+                    {index < capabilities.length - 1 && (
+                      <ArrowUpRight
+                        size={12}
+                        className="absolute right-1 top-1 text-white/25"
+                        aria-hidden="true"
+                      />
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </motion.div>
 
