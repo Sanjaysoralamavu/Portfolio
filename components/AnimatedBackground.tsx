@@ -5,6 +5,50 @@ type AnimatedBackgroundProps = {
   style?: React.CSSProperties;
 };
 
+class Particle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  size: number;
+  hue: number;
+
+  constructor(
+    private canvas: HTMLCanvasElement,
+    private ctx: CanvasRenderingContext2D,
+  ) {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.vx = (Math.random() - 0.5) * 0.5;
+    this.vy = (Math.random() - 0.41) * 0.5;
+    this.size = Math.random() * 1.8 + 0.8;
+    this.hue = 175 + Math.random() * 25;
+  }
+
+  update(elapsed: number) {
+    this.x += this.vx + Math.sin(elapsed * 0.0004 + this.y * 0.002) * 0.3;
+    this.y += this.vy + Math.cos(elapsed * 0.0003 + this.x * 0.002) * 0.3;
+
+    if (this.x < -30) this.x = this.canvas.width + 30;
+    if (this.x > this.canvas.width + 30) this.x = -30;
+    if (this.y < -30) this.y = this.canvas.height + 30;
+    if (this.y > this.canvas.height + 30) this.y = -30;
+  }
+
+  draw(elapsed: number) {
+    const alpha =
+      0.25 +
+      0.15 * Math.sin(elapsed * 0.002 + this.x * 0.01 + this.y * 0.01);
+    this.ctx.beginPath();
+    this.ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    this.ctx.fillStyle = `hsla(${this.hue}, 90%, 70%, ${alpha})`;
+    this.ctx.shadowColor = `hsla(${this.hue}, 90%, 72%, ${alpha * 0.75})`;
+    this.ctx.shadowBlur = 6;
+    this.ctx.fill();
+    this.ctx.shadowBlur = 0;
+  }
+}
+
 export default function AnimatedBackground({ style }: AnimatedBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -21,50 +65,13 @@ export default function AnimatedBackground({ style }: AnimatedBackgroundProps) {
     let particles: Particle[] = [];
     const particleCount = window.innerWidth < 768 ? 40 : 110;
 
-    class Particle {
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      size: number;
-      hue: number;
-
-      constructor() {
-        this.x = Math.random() * canvas!.width;
-        this.y = Math.random() * canvas!.height;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.41) * 0.5;
-        this.size = Math.random() * 1.8 + 0.8;
-        this.hue = 175 + Math.random() * 25;  // teal range matching #00899a
-      }
-
-      update(elapsed: number) {
-        this.x += this.vx + Math.sin(elapsed * 0.0004 + this.y * 0.002) * 0.3;
-        this.y += this.vy + Math.cos(elapsed * 0.0003 + this.x * 0.002) * 0.3;
-
-        if (this.x < -30) this.x = canvas!.width + 30;
-        if (this.x > canvas!.width + 30) this.x = -30;
-        if (this.y < -30) this.y = canvas!.height + 30;
-        if (this.y > canvas!.height + 30) this.y = -30;
-      }
-
-      draw(elapsed: number) {
-        if (!ctx) return;
-        const alpha = 0.25 + 0.15 * Math.sin(elapsed * 0.002 + this.x * 0.01 + this.y * 0.01);
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${this.hue}, 90%, 70%, ${alpha})`;
-        ctx.shadowColor = `hsla(${this.hue}, 90%, 72%, ${alpha * 0.75})`;
-        ctx.shadowBlur = 6;
-        ctx.fill();
-        ctx.shadowBlur = 0;
-      }
-    }
-
     const init = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      particles = Array.from({ length: particleCount }, () => new Particle());
+      particles = Array.from(
+        { length: particleCount },
+        () => new Particle(canvas, ctx),
+      );
     };
 
     const render = (time: number) => {

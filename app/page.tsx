@@ -1,9 +1,10 @@
 "use client";
 
-import { useScroll, useSpring, useTransform } from "framer-motion";
+import { MotionConfig, useScroll, useSpring } from "framer-motion";
 import { Github, Instagram, Linkedin, Mail } from "lucide-react";
 
 import SiteHeader from "@/components/SiteHeader";
+import ScrollStoryNav from "@/components/ScrollStoryNav";
 import Hero from "@/components/sections/Hero";
 import Story from "@/components/sections/Story";
 import ExperienceSection from "@/components/sections/ExperienceSection";
@@ -12,15 +13,15 @@ import Skills from "@/components/sections/Skills";
 import Education from "@/components/sections/Education";
 import Contact from "@/components/sections/Contact";
 import ScrollToTop from "@/components/ui/ScrollToTop";
+import ScrollTicker from "@/components/ui/ScrollTicker";
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 110, damping: 28 });
-  const heroScale = useTransform(scrollYProgress, [0, 0.22], [1, 0.94]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0.25]);
 
   return (
-    <main className="min-h-screen">
+    <MotionConfig reducedMotion="user">
+      <main className="min-h-screen overflow-clip">
       {/* Skip to content */}
       <a
         href="#content"
@@ -30,13 +31,16 @@ export default function Home() {
       </a>
 
       <SiteHeader progress={progress} />
+      <ScrollStoryNav />
 
-      <Hero heroScale={heroScale} heroOpacity={heroOpacity} />
+      <Hero />
 
       <section id="content">
         <Story />
+        <ScrollTicker text="Raw data · Clear systems · Useful decisions" />
         <ExperienceSection />
         <Projects />
+        <ScrollTicker text="Build · Test · Explain · Improve" dark />
         <Skills />
         <Education />
         <Contact />
@@ -86,6 +90,7 @@ export default function Home() {
 
       {/* Floating scroll-to-top button */}
       <ScrollToTop />
-    </main>
+      </main>
+    </MotionConfig>
   );
 }

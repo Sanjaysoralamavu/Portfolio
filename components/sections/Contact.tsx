@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { ArrowUpRight, Mail, MapPin, Phone, Sparkles } from "lucide-react";
 
 export default function Contact() {
@@ -33,15 +34,33 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:py-32">
+    <section id="contact" className="relative overflow-hidden">
+      <div
+        className="absolute -bottom-48 -right-48 h-[34rem] w-[34rem] rounded-full border border-[#00899a]/10"
+        aria-hidden="true"
+      />
+      <div className="relative mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:py-32">
 
       {/* ── Section label ───────────────────────────────────── */}
-      <p className="eyebrow">Let&apos;s talk</p>
+      <motion.p
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="eyebrow"
+      >
+        Let&apos;s talk
+      </motion.p>
 
       <div className="mt-10 grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
 
         {/* ── Left column ─────────────────────────────────────── */}
-        <div className="flex flex-col gap-8">
+        <motion.div
+          initial={{ opacity: 0, x: -28 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.35 }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col gap-8"
+        >
           <h2 className="text-2xl font-black leading-snug text-[#173138] sm:text-3xl">
             Have a question, a problem to untangle, or an idea in progress?
           </h2>
@@ -80,10 +99,15 @@ export default function Contact() {
               Tempe, Arizona
             </span>
           </div>
-        </div>
+        </motion.div>
 
         {/* ── Right column — form ─────────────────────────────── */}
-        <div>
+        <motion.div
+          initial={{ opacity: 0, x: 28 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.6, delay: 0.08 }}
+        >
           {contactStatus === "success" ? (
             <div className="flex flex-col items-center justify-center gap-4 rounded border border-[#173138]/12 bg-[#fdfefd] py-16 text-center">
               <Sparkles className="text-[#00899a]" size={32} aria-hidden="true" />
@@ -173,8 +197,9 @@ export default function Contact() {
               </div>
             </form>
           )}
-        </div>
+        </motion.div>
 
+      </div>
       </div>
     </section>
   );

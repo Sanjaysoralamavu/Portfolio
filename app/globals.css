@@ -20,9 +20,24 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: hidden;
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.story-grid {
+  background-image:
+    linear-gradient(rgba(23, 49, 56, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 49, 56, 0.05) 1px, transparent 1px),
+    radial-gradient(circle at 78% 42%, rgba(0, 137, 154, 0.12), transparent 31%),
+    radial-gradient(circle at 22% 76%, rgba(229, 115, 86, 0.09), transparent 24%);
+  background-size: 56px 56px, 56px 56px, auto, auto;
+  mask-image: linear-gradient(to bottom, black 72%, transparent);
+}
+
+.text-balance {
+  text-wrap: balance;
 }
 
 ::selection {
@@ -82,5 +97,14 @@ body {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }

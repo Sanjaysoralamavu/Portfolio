@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
 import { education } from "@/lib/data";
@@ -40,11 +41,13 @@ export default function Education() {
             >
               {/* Top: logo + status + school */}
               <div className="flex items-start gap-4">
-                <div className="grid h-14 w-14 shrink-0 place-items-center overflow-hidden rounded border border-[#173138]/10 bg-white">
-                  <img
+                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded border border-[#173138]/10 bg-white">
+                  <Image
                     src={`${BASE_PATH}${item.logo}`}
                     alt={item.name}
-                    className="h-full w-full object-contain p-1.5"
+                    fill
+                    sizes="56px"
+                    className="object-contain p-1.5"
                   />
                 </div>
                 <div className="min-w-0">

@@ -4,7 +4,14 @@ import { AnimatePresence, motion, type MotionValue } from "framer-motion";
 import { Download, Github, Instagram, Linkedin, Mail, Menu, X } from "lucide-react";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-const navItems = ["story", "experience", "skills", "education", "contact"] as const;
+const navItems = [
+  "story",
+  "experience",
+  "projects",
+  "skills",
+  "education",
+  "contact",
+] as const;
 
 const socialLinks = [
   { href: "https://linkedin.com/in/sanjay-soralamavu-dev", label: "LinkedIn",  icon: Linkedin  },

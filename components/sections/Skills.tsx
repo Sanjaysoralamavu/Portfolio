@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { skills, skillCategories, type SkillCategory } from "@/lib/data";
 
@@ -49,18 +49,24 @@ export default function Skills() {
       </div>
 
       {/* Skill grid */}
-      <motion.div
-        layout
-        className="grid gap-px overflow-hidden border border-[#173138]/15 bg-[#173138]/15 sm:grid-cols-2 lg:grid-cols-4"
-      >
-        {filtered.map((skill) => (
+      <motion.div layout className="grid gap-px overflow-hidden border border-[#173138]/15 bg-[#173138]/15 sm:grid-cols-2 lg:grid-cols-4">
+        <AnimatePresence mode="popLayout">
+        {filtered.map((skill, index) => (
           <motion.article
             layout
             key={skill.name}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="min-h-48 bg-[#f4f6f5] p-5 transition-colors hover:bg-[#e7f0ef]"
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96 }}
+            transition={{ duration: 0.35, delay: index * 0.035 }}
+            className="group relative min-h-52 overflow-hidden bg-[#f4f6f5] p-5 transition-colors hover:bg-[#e7f0ef]"
           >
+            <span
+              className="absolute -bottom-5 right-1 text-7xl font-black text-[#173138]/[0.035] transition-transform group-hover:-translate-y-2"
+              aria-hidden="true"
+            >
+              {String(index + 1).padStart(2, "0")}
+            </span>
             <p className="text-xs font-bold uppercase tracking-[0.13em] text-[#e57356]">
               {skill.category}
             </p>
@@ -70,6 +76,7 @@ export default function Skills() {
             </p>
           </motion.article>
         ))}
+        </AnimatePresence>
       </motion.div>
     </section>
   );

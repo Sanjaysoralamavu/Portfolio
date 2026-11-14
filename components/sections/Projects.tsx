@@ -1,5 +1,5 @@
 "use client";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Github } from "lucide-react";
@@ -37,15 +37,29 @@ export default function Projects() {
           </p>
         </div>
 
-        {/* Project cards grid */}
-        <div className="mt-12 grid gap-5 md:grid-cols-2">
-          {projects.map((project) => {
+        {/* Project cards become a stacked, scroll-led case-study deck. */}
+        <div className="mt-12 space-y-8 pb-10">
+          {projects.map((project, index) => {
             const isOpen = openSlug === project.slug;
             return (
-              <Fragment key={project.slug}>
+              <motion.div
+                key={project.slug}
+                initial={{ opacity: 0, y: 48 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.6, delay: index * 0.04 }}
+                style={{ top: `calc(5.25rem + ${index * 10}px)`, zIndex: index + 1 }}
+                className="relative bg-[#173138] lg:sticky"
+              >
                 <div
-                  className="group relative min-h-[350px] overflow-hidden border border-white/25 bg-white/[0.06] p-6 text-left transition duration-300 hover:-translate-y-1 hover:border-[#a7d9d7] hover:bg-white/[0.1] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white sm:p-8"
+                  className="group relative min-h-[330px] overflow-hidden border border-white/25 bg-[#204149] p-6 text-left shadow-[0_-18px_45px_rgba(9,25,29,0.16)] transition duration-300 hover:border-[#a7d9d7] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white sm:p-8 lg:min-h-[360px]"
                 >
+                  <span
+                    className="pointer-events-none absolute -bottom-12 right-3 text-[11rem] font-black leading-none text-white/[0.035] sm:text-[15rem]"
+                    aria-hidden="true"
+                  >
+                    {project.number}
+                  </span>
                   <span
                     className="absolute right-0 top-0 h-20 w-20 translate-x-10 -translate-y-10 rounded-full bg-[#00899a]/25 transition-transform duration-300 group-hover:translate-x-6 group-hover:-translate-y-6"
                     aria-hidden="true"
@@ -122,7 +136,7 @@ export default function Projects() {
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.35, ease: "easeOut" }}
-                      className="overflow-hidden py-8 md:col-span-2"
+                      className="relative z-20 overflow-hidden bg-[#173138] py-8"
                       aria-labelledby={`${project.slug}-title`}
                     >
                 <div className="grid gap-8 lg:grid-cols-[.8fr_1.2fr]">
@@ -292,7 +306,7 @@ export default function Projects() {
                     </motion.article>
                   )}
                 </AnimatePresence>
-              </Fragment>
+              </motion.div>
             );
           })}
         </div>
