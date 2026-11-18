@@ -14,6 +14,7 @@ import Education from "@/components/sections/Education";
 import Contact from "@/components/sections/Contact";
 import ScrollToTop from "@/components/ui/ScrollToTop";
 import ScrollTicker from "@/components/ui/ScrollTicker";
+import ResumeChat from "@/components/ui/ResumeChat";
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
@@ -89,6 +90,7 @@ export default function Home() {
         </footer>
 
         <ScrollToTop />
+        <ResumeChat />
       </main>
     </MotionConfig>
   );
