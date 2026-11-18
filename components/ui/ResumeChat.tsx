@@ -21,6 +21,8 @@ import {
   answerResumeQuestion,
   starterQuestions,
 } from "@/lib/resume-knowledge";
+import ChatContactReview from "@/components/ui/ChatContactReview";
+import { sendContactMessage, type ContactMessage } from "@/lib/contact";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const TEASER_SEEN_KEY = "sanjay-profile-chat-teaser-seen";
@@ -30,12 +32,27 @@ type ChatMessage = {
   role: "assistant" | "user";
   text: string;
   suggestions?: string[];
+  contactReview?: ContactMessage;
+};
+
+type ContactStep =
+  | "idle"
+  | "offer"
+  | "name"
+  | "email"
+  | "message"
+  | "review";
+
+const emptyContact: ContactMessage = {
+  name: "",
+  email: "",
+  message: "",
 };
 
 const welcomeMessage: ChatMessage = {
   id: 0,
   role: "assistant",
-  text: "Hi — ask me anything about Sanjay’s experience, projects, skills, education, achievements, or background.",
+  text: "Hi — I can tell you about Sanjay’s work or help you send him a message. What would you like to know?",
   suggestions: [...starterQuestions],
 };
 
@@ -45,6 +62,12 @@ export default function ResumeChat() {
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([welcomeMessage]);
   const [thinking, setThinking] = useState(false);
+  const [contactStep, setContactStep] = useState<ContactStep>("idle");
+  const [contactDetails, setContactDetails] =
+    useState<ContactMessage>(emptyContact);
+  const [contactSendStatus, setContactSendStatus] = useState<
+    "idle" | "sending" | "error"
+  >("idle");
   const messageId = useRef(1);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -130,9 +153,48 @@ export default function ResumeChat() {
     setOpen(true);
   }
 
+  function appendAssistantMessage(
+    text: string,
+    options?: Pick<ChatMessage, "suggestions" | "contactReview">,
+  ) {
+    setMessages((current) => [
+      ...current,
+      {
+        id: messageId.current++,
+        role: "assistant",
+        text,
+        ...options,
+      },
+    ]);
+  }
+
+  function cancelContactFlow() {
+    setContactStep("idle");
+    setContactDetails(emptyContact);
+    setContactSendStatus("idle");
+    appendAssistantMessage("No problem — nothing was sent. What else would you like to know?");
+  }
+
+  async function confirmContactMessage() {
+    if (contactStep !== "review") return;
+    setContactSendStatus("sending");
+
+    try {
+      await sendContactMessage(contactDetails, "Chat");
+      setContactStep("idle");
+      setContactSendStatus("idle");
+      appendAssistantMessage(
+        `Done — your message was sent to Sanjay. He can reply directly to ${contactDetails.email}.`,
+      );
+      setContactDetails(emptyContact);
+    } catch {
+      setContactSendStatus("error");
+    }
+  }
+
   function ask(question: string) {
     const trimmedQuestion = question.trim();
-    if (!trimmedQuestion || thinking) return;
+    if (!trimmedQuestion || thinking || contactStep === "review") return;
 
     const previousQuestion = [...messages]
       .reverse()
@@ -148,16 +210,140 @@ export default function ResumeChat() {
     setThinking(true);
 
     responseTimer.current = window.setTimeout(() => {
-      const reply = answerResumeQuestion(trimmedQuestion, previousQuestion);
-      setMessages((current) => [
-        ...current,
-        {
-          id: messageId.current++,
-          role: "assistant",
-          text: reply.answer,
-          suggestions: reply.suggestions,
-        },
+      const normalizedAnswer = trimmedQuestion.toLowerCase().replace(/[’']/g, "'");
+      const cancelCommands = new Set([
+        "cancel",
+        "cancel this",
+        "stop",
+        "stop this",
+        "never mind",
+        "nevermind",
+        "exit",
       ]);
+      if (
+        contactStep !== "idle" &&
+        cancelCommands.has(normalizedAnswer.trim())
+      ) {
+        setContactStep("idle");
+        setContactDetails(emptyContact);
+        appendAssistantMessage("No problem — nothing was sent. What else would you like to know?");
+        setThinking(false);
+        return;
+      }
+
+      if (contactStep === "offer") {
+        const offerWords = new Set(normalizedAnswer.split(/\s+/));
+        const declinesOffer =
+          offerWords.has("no") ||
+          offerWords.has("nope") ||
+          ["not now", "no thanks", "maybe later", "not interested"].some((phrase) =>
+            normalizedAnswer.includes(phrase),
+          );
+        const acceptsOffer =
+          ["yes", "yeah", "yep", "sure", "okay", "ok"].some((word) =>
+            offerWords.has(word),
+          ) ||
+          [
+            "please",
+            "do it",
+            "send",
+            "message",
+            "i'd like to",
+            "i would like to",
+            "let's do it",
+            "lets do it",
+          ].some((phrase) =>
+            normalizedAnswer.includes(phrase),
+          );
+
+        if (declinesOffer) {
+          setContactStep("idle");
+          appendAssistantMessage("No problem. What else would you like to know?");
+          setThinking(false);
+          return;
+        }
+
+        if (acceptsOffer) {
+          setContactDetails(emptyContact);
+          setContactStep("name");
+          appendAssistantMessage("Great — what’s your name?");
+          setThinking(false);
+          window.setTimeout(() => inputRef.current?.focus(), 0);
+          return;
+        }
+
+        setContactStep("idle");
+      }
+
+      if (contactStep === "name") {
+        if (trimmedQuestion.length < 2) {
+          appendAssistantMessage("What name should I use for the message?");
+        } else {
+          setContactDetails((current) => ({
+            ...current,
+            name: trimmedQuestion.slice(0, 80),
+          }));
+          setContactStep("email");
+          appendAssistantMessage(
+            `Thanks, ${trimmedQuestion.split(" ")[0]}. What email should he reply to?`,
+          );
+        }
+        setThinking(false);
+        window.setTimeout(() => inputRef.current?.focus(), 0);
+        return;
+      }
+
+      if (contactStep === "email") {
+        const email = trimmedQuestion.slice(0, 160);
+        const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (email.toLowerCase() === "sanjayso@asu.edu") {
+          appendAssistantMessage(
+            "That’s Sanjay’s email. What email should he use to reply to you?",
+          );
+        } else if (!isValidEmail) {
+          appendAssistantMessage(
+            "That email doesn’t look complete. Please enter something like name@example.com.",
+          );
+        } else {
+          setContactDetails((current) => ({ ...current, email }));
+          setContactStep("message");
+          appendAssistantMessage("Great. What message would you like to send Sanjay?");
+        }
+        setThinking(false);
+        window.setTimeout(() => inputRef.current?.focus(), 0);
+        return;
+      }
+
+      if (contactStep === "message") {
+        if (trimmedQuestion.length < 10) {
+          appendAssistantMessage(
+            "Could you add a little more detail so Sanjay has enough context?",
+          );
+        } else {
+          const completedContact = {
+            ...contactDetails,
+            message: trimmedQuestion.slice(0, 1200),
+          };
+          setContactDetails(completedContact);
+          setContactStep("review");
+          setContactSendStatus("idle");
+          appendAssistantMessage("Here’s everything together. Review it before sending.", {
+            contactReview: completedContact,
+          });
+        }
+        setThinking(false);
+        return;
+      }
+
+      const reply = answerResumeQuestion(trimmedQuestion, previousQuestion);
+      if (reply.action === "contact") {
+        setContactDetails(emptyContact);
+        setContactStep("name");
+        setContactSendStatus("idle");
+      } else if (reply.action === "contact-info") {
+        setContactStep("offer");
+      }
+      appendAssistantMessage(reply.answer, { suggestions: reply.suggestions });
       setThinking(false);
       window.setTimeout(() => inputRef.current?.focus(), 0);
     }, 360);
@@ -178,6 +364,32 @@ export default function ResumeChat() {
   const lastAssistantId = [...messages]
     .reverse()
     .find((message) => message.role === "assistant")?.id;
+  const inputPlaceholder =
+    contactStep === "offer"
+      ? "Reply yes, or ask something else…"
+      : contactStep === "name"
+      ? "Type your name…"
+      : contactStep === "email"
+        ? "Type your email…"
+        : contactStep === "message"
+          ? "Write your message…"
+          : contactStep === "review"
+            ? "Review the details above"
+            : "Ask about experience, skills, projects…";
+  const inputMaxLength =
+    contactStep === "name" ? 80 : contactStep === "email" ? 160 : contactStep === "message" ? 1200 : 280;
+  const contactProgress =
+    contactStep === "offer"
+      ? "Contact options"
+      : contactStep === "name"
+      ? "Contact · step 1 of 3"
+      : contactStep === "email"
+        ? "Contact · step 2 of 3"
+        : contactStep === "message"
+          ? "Contact · step 3 of 3"
+          : contactStep === "review"
+            ? "Review before sending"
+            : "Ask anything about Sanjay";
 
   return (
     <>
@@ -259,6 +471,7 @@ export default function ResumeChat() {
                   {message.role === "assistant" &&
                     message.id === lastAssistantId &&
                     message.suggestions &&
+                    message.suggestions.length > 0 &&
                     !thinking && (
                       <div className="mt-3 flex flex-wrap gap-2">
                         {message.suggestions.map((suggestion) => (
@@ -272,6 +485,20 @@ export default function ResumeChat() {
                           </button>
                         ))}
                       </div>
+                    )}
+
+                  {message.role === "assistant" &&
+                    message.id === lastAssistantId &&
+                    message.contactReview &&
+                    contactStep === "review" &&
+                    !thinking && (
+                      <ChatContactReview
+                        contact={contactDetails}
+                        status={contactSendStatus}
+                        onChange={setContactDetails}
+                        onConfirm={confirmContactMessage}
+                        onCancel={cancelContactFlow}
+                      />
                     )}
                 </div>
               ))}
@@ -307,15 +534,15 @@ export default function ResumeChat() {
                   value={draft}
                   onChange={(event) => setDraft(event.target.value)}
                   onKeyDown={handleInputKeyDown}
-                  rows={1}
-                  maxLength={280}
-                  disabled={thinking}
-                  placeholder="Ask about experience, skills, projects…"
+                  rows={contactStep === "message" ? 3 : 1}
+                  maxLength={inputMaxLength}
+                  disabled={thinking || contactStep === "review"}
+                  placeholder={inputPlaceholder}
                   className="max-h-28 min-h-12 flex-1 resize-none rounded-[1.15rem] border border-white/15 bg-white/8 px-4 py-3 text-sm leading-6 text-white outline-none placeholder:text-white/35 focus:border-[#8c98ff] disabled:cursor-wait disabled:opacity-60"
                 />
                 <button
                   type="submit"
-                  disabled={!draft.trim() || thinking}
+                  disabled={!draft.trim() || thinking || contactStep === "review"}
                   aria-label="Send question"
                   className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[#d7ff43] text-[#111413] transition hover:-translate-y-0.5 hover:bg-white disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-35 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 >
@@ -324,7 +551,7 @@ export default function ResumeChat() {
               </form>
               <div className="mt-2 flex items-center justify-between gap-3 px-1">
                 <p className="font-mono text-[7px] uppercase tracking-[0.1em] text-white/30">
-                  Ask anything about Sanjay
+                  {contactProgress}
                 </p>
                 <a
                   href={`${BASE_PATH}/resume.pdf`}

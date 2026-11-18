@@ -4,6 +4,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Mail, MapPin, Phone, Sparkles } from "lucide-react";
 
+import { sendContactMessage } from "@/lib/contact";
+
 export default function Contact() {
   const [contactForm, setContactForm] = useState({
     name: "",
@@ -18,18 +20,7 @@ export default function Contact() {
     event.preventDefault();
     setContactStatus("loading");
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: "0c3ff25b-bd2a-4a6f-9d46-dfbef0a6969c",
-          ...contactForm,
-        }),
-      });
-      if (!response.ok) throw new Error("Submission failed");
+      await sendContactMessage(contactForm, "Contact section");
       setContactStatus("success");
       setContactForm({ name: "", email: "", message: "" });
     } catch {

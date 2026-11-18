@@ -12,6 +12,7 @@ export type ChatReply = {
   sources: ResumeSection[];
   topic: string;
   suggestions: string[];
+  action?: "contact" | "contact-info";
 };
 
 type ExperienceEntry = {
@@ -199,7 +200,7 @@ export const starterQuestions = [
   "Summarize Sanjay’s experience",
   "What problems has he solved?",
   "What are his strongest skills?",
-  "Tell me about his projects",
+  "Send Sanjay a message",
 ] as const;
 
 const followUpSuggestions: Record<string, string[]> = {
@@ -272,6 +273,252 @@ function containsAny(value: string, terms: readonly string[]) {
     }
     return normalizedValue.includes(normalizedTerm);
   });
+}
+
+function contactIntent(query: string): "message" | "info" | undefined {
+  if (
+    containsAny(query, [
+      "connect me",
+      "help me connect",
+      "send him a message",
+      "send sanjay a message",
+      "message him",
+      "message sanjay",
+      "email him",
+      "email sanjay",
+      "write to him",
+      "write to sanjay",
+      "i want to connect",
+      "i want to contact",
+      "i want to reach",
+      "i'd like to connect",
+      "i would like to connect",
+      "can you connect",
+      "can you contact",
+      "can you reach",
+      "schedule a meeting",
+      "book a meeting",
+      "set up a meeting",
+      "meet with sanjay",
+    ])
+  ) {
+    return "message";
+  }
+
+  if (
+    containsAny(query, [
+      "how to connect",
+      "how can i connect",
+      "how do i connect",
+      "how to contact",
+      "how can i contact",
+      "how do i contact",
+      "how to reach",
+      "how can i reach",
+      "where can i reach",
+      "get in touch",
+      "contact information",
+      "contact details",
+      "email address",
+      "his email",
+      "phone number",
+      "his phone",
+      "his number",
+      "his linkedin",
+      "share his contact",
+      "give me his contact",
+      "call him",
+      "linkedin",
+    ])
+  ) {
+    return "info";
+  }
+
+  const hasContactAction = containsAny(query, [
+    "contact",
+    "connect",
+    "reach",
+    "message",
+    "email",
+    "write",
+    "talk",
+    "speak",
+    "call",
+    "meet",
+    "schedule",
+  ]);
+  const refersToSanjay = containsAny(query, [
+    "sanjay",
+    "him",
+    "his",
+    "you",
+  ]);
+
+  if (!hasContactAction || !refersToSanjay) return undefined;
+
+  const asksForInformation = /^(how|what|where|can i|could i|is there)\b/.test(
+    query,
+  );
+  return asksForInformation ? "info" : "message";
+}
+
+function isExactPhrase(query: string, phrases: readonly string[]) {
+  return phrases.some((phrase) => query === normalize(phrase));
+}
+
+function smallTalkReply(query: string): ChatReply | undefined {
+  if (
+    /^(?:(?:ok|okay|alright|thanks|thank you) )?(?:bye|goodbye|see you|see ya|talk later|catch you later|good night|take care|have a good day)(?: (?:thanks|thank you))?$/.test(
+      query,
+    )
+  ) {
+    return {
+      answer:
+        "Thanks for stopping by. Come back anytime if you’d like to learn more about Sanjay or send him a message.",
+      sources: ["Profile"],
+      topic: "conversation",
+      suggestions: [],
+    };
+  }
+
+  if (
+    isExactPhrase(query, [
+      "thanks",
+      "thank you",
+      "thanks a lot",
+      "thank you so much",
+      "appreciate it",
+      "that was helpful",
+      "very helpful",
+    ])
+  ) {
+    return {
+      answer: "You’re welcome. Is there anything else you’d like to know about Sanjay?",
+      sources: ["Profile"],
+      topic: "conversation",
+      suggestions: followUpSuggestions.overview,
+    };
+  }
+
+  if (
+    isExactPhrase(query, [
+      "how are you",
+      "how's it going",
+      "hows it going",
+      "how are things",
+      "hi how are you",
+      "hello how are you",
+      "hey how are you",
+    ])
+  ) {
+    return {
+      answer:
+        "I’m doing well and ready to help. You can ask about Sanjay’s work, background, projects, skills, or how to contact him.",
+      sources: ["Profile"],
+      topic: "conversation",
+      suggestions: followUpSuggestions.overview,
+    };
+  }
+
+  if (
+    isExactPhrase(query, [
+      "who are you",
+      "what can you do",
+      "how does this work",
+      "help me",
+      "help",
+      "what should i ask",
+    ])
+  ) {
+    return {
+      answer:
+        "I can answer questions about Sanjay’s experience, projects, skills, education, achievements, and background. I can also show his contact information or help you send him a message.",
+      sources: ["Profile"],
+      topic: "conversation",
+      suggestions: [...starterQuestions],
+    };
+  }
+
+  if (
+    isExactPhrase(query, [
+      "hello",
+      "hey",
+      "hi",
+      "hi there",
+      "hello there",
+      "good morning",
+      "good afternoon",
+      "good evening",
+      "yo",
+    ])
+  ) {
+    return {
+      answer:
+        "Hi — I can tell you about Sanjay’s work or help you send him a message. What would you like to know?",
+      sources: ["Profile"],
+      topic: "conversation",
+      suggestions: [...starterQuestions],
+    };
+  }
+
+  if (
+    isExactPhrase(query, [
+      "ok",
+      "okay",
+      "cool",
+      "got it",
+      "makes sense",
+      "nice",
+      "great",
+      "awesome",
+      "perfect",
+    ])
+  ) {
+    return {
+      answer: "Got it. What else would you like to know?",
+      sources: ["Profile"],
+      topic: "conversation",
+      suggestions: followUpSuggestions.overview,
+    };
+  }
+
+  if (isExactPhrase(query, ["yes", "yeah", "yep", "sure", "sounds good"])) {
+    return {
+      answer: "Great — what would you like help with?",
+      sources: ["Profile"],
+      topic: "conversation",
+      suggestions: [...starterQuestions],
+    };
+  }
+
+  if (isExactPhrase(query, ["no", "nope", "not now", "maybe later"])) {
+    return {
+      answer: "No problem. I’m here whenever you need me.",
+      sources: ["Profile"],
+      topic: "conversation",
+      suggestions: [],
+    };
+  }
+
+  if (isExactPhrase(query, ["sorry", "my bad", "oops"])) {
+    return {
+      answer: "No worries. What would you like to know?",
+      sources: ["Profile"],
+      topic: "conversation",
+      suggestions: followUpSuggestions.overview,
+    };
+  }
+
+  if (isExactPhrase(query, ["haha", "lol", "that is funny"])) {
+    return {
+      answer: "Glad you’re enjoying the conversation. What should we explore next?",
+      sources: ["Profile"],
+      topic: "conversation",
+      suggestions: followUpSuggestions.overview,
+    };
+  }
+
+  return undefined;
 }
 
 function formatRole(entry: ExperienceEntry) {
@@ -667,15 +914,30 @@ export function answerResumeQuestion(
 
   if (inferredRole) return roleReply(inferredRole);
 
-  if (containsAny(query, ["hello", "hey", "hi ", "good morning", "good evening"]) || query === "hi") {
+  const requestedContact = contactIntent(query);
+  if (requestedContact === "message") {
     return {
       answer:
-        "Hi — ask me anything about Sanjay’s experience, skills, projects, education, achievements, background, or how to contact him.",
-      sources: ["Profile"],
-      topic: "overview",
-      suggestions: followUpSuggestions.overview,
+        "Absolutely — what’s your name?",
+      sources: ["Contact"],
+      topic: "contact",
+      suggestions: [],
+      action: "contact",
     };
   }
+
+  if (requestedContact === "info") {
+    return {
+      answer: `You can connect with Sanjay directly:\n\n• Email: ${resumeProfile.email}\n• LinkedIn: linkedin.com/in/sanjay-soralamavu-dev\n• Phone: ${resumeProfile.phoneDisplay}\n\nIf you prefer, I can also help you send him a message here.`,
+      sources: ["Contact"],
+      topic: "contact",
+      suggestions: ["Send Sanjay a message", "Summarize his experience"],
+      action: "contact-info",
+    };
+  }
+
+  const smallTalk = smallTalkReply(query);
+  if (smallTalk) return smallTalk;
 
   const profileFact = profileFactReply(query);
   if (profileFact) return profileFact;
@@ -700,24 +962,6 @@ export function answerResumeQuestion(
       sources: ["Profile"],
       topic: "unknown",
       suggestions: followUpSuggestions.unknown,
-    };
-  }
-
-  if (
-    containsAny(query, [
-      "contact",
-      "email",
-      "phone",
-      "linkedin",
-      "reach him",
-      "reach sanjay",
-    ])
-  ) {
-    return {
-      answer: `You can reach Sanjay at ${resumeProfile.email}, call ${resumeProfile.phoneDisplay}, or connect on LinkedIn at linkedin.com/in/sanjay-soralamavu-dev.`,
-      sources: ["Contact"],
-      topic: "contact",
-      suggestions: followUpSuggestions.contact,
     };
   }
 
