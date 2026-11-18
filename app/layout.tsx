@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sanjaysoralamavu.github.io"),
-  title: "Sanjay S Dev | Data Analyst & Automation Specialist",
+  title: "Sanjay S Dev - Data Analyst",
   description:
     "Portfolio of Sanjay S Dev — Data Analyst at ASU Social Embeddedness. I build ETL pipelines, executive dashboards, and automation workflows that help teams make faster, clearer decisions.",
   keywords: [
