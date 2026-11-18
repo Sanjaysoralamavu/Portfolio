@@ -6,9 +6,16 @@ export const roles = [
     role: "Data Input Specialist",
     period: "May 2026 - Present",
     location: "Tempe, Arizona",
-    logo: "/ASU logo.png",
+    logo: "/asu-social-embeddedness.png",
+    website: "https://community.asu.edu/",
     chapter: "01 / Where I am now",
     lead: "I turn Collaboratory exports into reporting systems people can rely on.",
+    summary:
+      "I build and maintain a Python ETL pipeline that turns raw Collaboratory exports into clean, validated Tableau-ready relational datasets. I also create dashboards and documentation so Social Embeddedness teams can refresh reports and explore activity, organization, profile, unit, and course data with confidence.",
+    impact: {
+      value: "Raw → report-ready",
+      label: "validated reporting pipeline",
+    },
     bullets: [
       "Built and maintained a Python ETL pipeline that turns raw Collaboratory exports into clean Tableau-ready tables, bridge tables, validation reports, and archived refreshes.",
       "Modeled activity, organization, profile, unit, and course data into relational datasets for Social Embeddedness reporting and interactive dashboards.",
@@ -23,8 +30,15 @@ export const roles = [
     period: "Aug 2022 - Aug 2025",
     location: "Bengaluru, India",
     logo: "/Hitachi-Logo.png",
+    website: "https://www.hitachids.com/",
     chapter: "02 / Learning at scale",
     lead: "I helped global teams see their operational data more clearly and act on it sooner.",
+    summary:
+      "I designed Power BI dashboards for audit and QEI KPIs, automated recurring reporting, and analyzed global quality data with Python, SQL, and Excel. The work helped raise process efficiency by 30% and reduced non-compliance prediction errors by 20%.",
+    impact: {
+      value: "+30%",
+      label: "process efficiency",
+    },
     bullets: [
       "Designed and maintained Power BI dashboards for QEI and audit KPIs, helping raise process efficiency by 30%.",
       "Prepared, cleaned, and analyzed large datasets with Python, SQL, and Excel to keep compliance and operational health visible.",
@@ -33,7 +47,7 @@ export const roles = [
       "Automated recurring reports and email distribution with Power Automate, making updates easier to share across stakeholders.",
       "Translated audit requirements into dashboard specs and monthly leadership reports that made the next step clearer.",
     ],
-    tags: [],
+    tags: ["Power BI", "Python & SQL", "Automation", "Quality analytics"],
   },
   {
     org: "Indian Institute of Science",
@@ -41,8 +55,15 @@ export const roles = [
     period: "Jan 2022 - Jul 2022",
     location: "Bengaluru, India",
     logo: "/IISC logo.svg",
+    website: "https://www.iisc.ac.in/",
     chapter: "03 / Where it started",
     lead: "This is where I learned that careful data preparation can turn observation into discovery.",
+    summary:
+      "I developed a ball-tracking research application using smartphone video and annotated training data. I cleaned and validated motion data, visualized trajectories with Python, and documented findings so research teams could evaluate the model and guide improvements.",
+    impact: {
+      value: "Video → insight",
+      label: "research-ready tracking pipeline",
+    },
     bullets: [
       "Developed a ball-tracking application using smartphone video capture and annotated data pipelines for model training.",
       "Created Python visualizations with Matplotlib and Seaborn to explore trajectory performance in a more intuitive way.",
@@ -50,7 +71,7 @@ export const roles = [
       "Used exploratory analysis to uncover patterns in motion data and guide model improvements.",
       "Documented the method, findings, and recommendations so research stakeholders could follow the work.",
     ],
-    tags: [],
+    tags: ["Computer vision", "Python", "Data visualization", "Research"],
   },
 ];
 

@@ -19,16 +19,16 @@ export default function Skills() {
       : skills.filter((skill) => skill.category === skillFilter);
 
   return (
-    <section id="skills" className="bg-[#f4f0e7] text-[#111413]">
+    <section id="skills" className="bg-[#111413] text-[#f4f0e7]">
       <div className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:py-32">
         <div className="grid gap-10 lg:grid-cols-[.72fr_1.28fr] lg:gap-16">
           <div className="lg:sticky lg:top-28 lg:h-fit">
-            <p className="eyebrow">Toolkit</p>
+            <p className="eyebrow text-[#d7ff43]">Toolkit</p>
             <h2 className="font-display mt-5 text-6xl leading-[0.86] tracking-[-0.055em] sm:text-7xl">
               Tools follow
-              <span className="block italic text-[#6a75ef]">the problem.</span>
+              <span className="block italic text-[#8c98ff]">the problem.</span>
             </h2>
-            <p className="mt-7 max-w-sm text-base leading-7 text-[#5e6965]">
+            <p className="mt-7 max-w-sm text-base leading-7 text-white/60">
               I choose the smallest reliable stack that can move the work from
               raw input to a maintained result.
             </p>
@@ -45,8 +45,8 @@ export default function Skills() {
                   aria-pressed={skillFilter === category}
                   className={`rounded-full border px-3.5 py-2 font-mono text-[9px] font-black uppercase tracking-[0.1em] transition ${
                     skillFilter === category
-                      ? "border-[#111413] bg-[#111413] text-white"
-                      : "border-[#111413]/20 hover:border-[#111413]"
+                      ? "border-[#d7ff43] bg-[#d7ff43] text-[#111413]"
+                      : "border-white/20 text-white/65 hover:border-white/60 hover:text-white"
                   }`}
                 >
                   {category}
@@ -65,7 +65,7 @@ export default function Skills() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.96 }}
                   transition={{ duration: 0.3, delay: index * 0.025 }}
-                  className={`${skillColors[index % skillColors.length]} group relative min-h-52 overflow-hidden rounded-[1.5rem] p-6`}
+                  className={`${skillColors[index % skillColors.length]} group relative min-h-52 overflow-hidden rounded-[1.5rem] p-6 text-[#111413]`}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <p className="font-mono text-[9px] font-black uppercase tracking-[0.12em] text-[#111413]/55">
