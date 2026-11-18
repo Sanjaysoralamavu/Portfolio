@@ -9,6 +9,7 @@ import {
 } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  ArrowRight,
   ArrowUp,
   ExternalLink,
   MessageCircleMore,
@@ -22,6 +23,7 @@ import {
 } from "@/lib/resume-knowledge";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const TEASER_SEEN_KEY = "sanjay-profile-chat-teaser-seen";
 
 type ChatMessage = {
   id: number;
@@ -39,6 +41,7 @@ const welcomeMessage: ChatMessage = {
 
 export default function ResumeChat() {
   const [open, setOpen] = useState(false);
+  const [showTeaser, setShowTeaser] = useState(false);
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([welcomeMessage]);
   const [thinking, setThinking] = useState(false);
@@ -47,6 +50,34 @@ export default function ResumeChat() {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const responseTimer = useRef<number | null>(null);
+
+  useEffect(() => {
+    let alreadySeen = false;
+    try {
+      alreadySeen = window.sessionStorage.getItem(TEASER_SEEN_KEY) === "true";
+    } catch {
+      // The teaser still works when storage is unavailable.
+    }
+    if (alreadySeen) return;
+
+    const teaserTimer = window.setTimeout(() => {
+      try {
+        if (window.sessionStorage.getItem(TEASER_SEEN_KEY) === "true") return;
+        window.sessionStorage.setItem(TEASER_SEEN_KEY, "true");
+      } catch {
+        // Keep the interaction usable without storage.
+      }
+      setShowTeaser(true);
+    }, 1800);
+
+    return () => window.clearTimeout(teaserTimer);
+  }, []);
+
+  useEffect(() => {
+    if (!showTeaser) return;
+    const dismissTimer = window.setTimeout(() => setShowTeaser(false), 11000);
+    return () => window.clearTimeout(dismissTimer);
+  }, [showTeaser]);
 
   useEffect(() => {
     if (!open) return;
@@ -83,6 +114,20 @@ export default function ResumeChat() {
   function closeChat() {
     setOpen(false);
     window.setTimeout(() => triggerRef.current?.focus(), 0);
+  }
+
+  function rememberTeaserInteraction() {
+    try {
+      window.sessionStorage.setItem(TEASER_SEEN_KEY, "true");
+    } catch {
+      // Storage is an enhancement, not a requirement.
+    }
+    setShowTeaser(false);
+  }
+
+  function openChat() {
+    rememberTeaserInteraction();
+    setOpen(true);
   }
 
   function ask(question: string) {
@@ -296,11 +341,61 @@ export default function ResumeChat() {
       </AnimatePresence>
 
       <AnimatePresence>
+        {!open && showTeaser && (
+          <motion.aside
+            aria-label="Chat welcome message"
+            initial={{ opacity: 0, y: 14, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.98 }}
+            transition={{ duration: 0.24, ease: [0.2, 0.8, 0.2, 1] }}
+            className="fixed bottom-[5.9rem] left-4 z-[60] w-[min(21rem,calc(100vw-2rem))] rounded-[1.35rem] border border-[#111413]/15 bg-[#f4f0e7] p-2 text-[#111413] shadow-[0_18px_55px_rgba(17,20,19,0.24)] sm:bottom-[6.4rem] sm:left-6"
+          >
+            <span
+              className="absolute -bottom-2 left-8 h-4 w-4 rotate-45 border-b border-r border-[#111413]/15 bg-[#f4f0e7]"
+              aria-hidden="true"
+            />
+            <button
+              type="button"
+              onClick={rememberTeaserInteraction}
+              aria-label="Dismiss welcome message"
+              className="absolute right-3 top-3 z-10 grid h-7 w-7 place-items-center rounded-full text-[#5e6965] transition hover:bg-[#111413]/8 hover:text-[#111413] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6a75ef]"
+            >
+              <X size={13} aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={openChat}
+              className="group w-full rounded-[1rem] p-3 pr-10 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6a75ef]"
+            >
+              <span className="flex items-center gap-2 font-mono text-[8px] font-black uppercase tracking-[0.14em] text-[#5e6965]">
+                <span className="h-2 w-2 rounded-full bg-[#d7ff43] ring-1 ring-[#111413]/20" />
+                Hi there
+              </span>
+              <span className="mt-2 block text-sm font-bold leading-5 tracking-[-0.01em]">
+                Want the quick version of Sanjay&apos;s work?
+              </span>
+              <span className="mt-1.5 block text-xs leading-5 text-[#5e6965]">
+                Ask what he builds, where he has worked, or what problems he solves.
+              </span>
+              <span className="mt-3 flex items-center gap-1.5 text-[11px] font-black text-[#111413]">
+                Start a conversation
+                <ArrowRight
+                  size={13}
+                  className="transition-transform group-hover:translate-x-1"
+                  aria-hidden="true"
+                />
+              </span>
+            </button>
+          </motion.aside>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
         {!open && (
           <motion.button
             ref={triggerRef}
             type="button"
-            onClick={() => setOpen(true)}
+            onClick={openChat}
             aria-expanded={open}
             aria-controls="resume-chat"
             initial={{ opacity: 0, y: 14 }}
