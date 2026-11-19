@@ -564,6 +564,203 @@ function impactOverviewReply(): ChatReply {
   };
 }
 
+function roleFitReply(
+  query: string,
+  previousQuestion?: string,
+): ChatReply | undefined {
+  const refersToEarlierRole = containsAny(query, [
+    "this role",
+    "that role",
+    "this position",
+    "that position",
+  ]);
+  const context =
+    refersToEarlierRole && previousQuestion
+      ? `${query} ${normalize(previousQuestion)}`
+      : query;
+  const softwareRole = containsAny(context, [
+    "software developer",
+    "software engineer",
+    "backend developer",
+    "backend engineer",
+    "full stack",
+    "fullstack",
+    "web developer",
+    "software development",
+    "developer role",
+    "developer position",
+    "developer job",
+    "programmer",
+    "sde",
+  ]);
+  const dataEngineeringRole = containsAny(context, [
+    "data engineer",
+    "analytics engineer",
+    "etl developer",
+  ]);
+  const analyticsRole = containsAny(context, [
+    "data analyst",
+    "business analyst",
+    "bi analyst",
+    "business intelligence",
+    "reporting analyst",
+    "tableau developer",
+    "power bi developer",
+  ]);
+  const dataScienceRole = containsAny(context, [
+    "data scientist",
+    "machine learning",
+    "ml engineer",
+    "ai engineer",
+  ]);
+  const qualityRole = containsAny(context, [
+    "quality analyst",
+    "process improvement",
+    "quality improvement",
+    "compliance analyst",
+    "audit analyst",
+  ]);
+  const hasTargetRole =
+    softwareRole ||
+    dataEngineeringRole ||
+    analyticsRole ||
+    dataScienceRole ||
+    qualityRole;
+  const explicitFitQuestion = containsAny(query, [
+    "why hire",
+    "why should i hire",
+    "why should we hire",
+    "should i hire",
+    "should we hire",
+    "hire him",
+    "hire sanjay",
+    "worth hiring",
+    "good fit",
+    "fit for",
+    "suited for",
+    "qualified for",
+    "candidate for",
+    "how good is he",
+    "is he good",
+    "is sanjay good",
+    "would he be good",
+    "right person",
+    "right for",
+    "strong candidate",
+    "work as",
+    "recommend him",
+    "recommend sanjay",
+    "can he do this job",
+    "can he do the job",
+    "handle this role",
+    "handle the role",
+  ]);
+  const usesAssessmentLanguage =
+    /\b(fit|fits|fitting|suit|suited|suitable|qualify|qualified|candidate|hire|hiring|capable|match|matches|strong|good|ready|appropriate|successful|succeed|rate)\b/.test(
+      query,
+    );
+  const asksForFit =
+    explicitFitQuestion || (hasTargetRole && usesAssessmentLanguage);
+
+  if (!asksForFit) return undefined;
+
+  const namesSpecificExperience = resumeProfile.experience.some((entry) =>
+    containsAny(query, entry.keywords),
+  );
+
+  // Let skill-specific questions such as “Is he good at Python?” use the
+  // detailed evidence instead of a broad candidate assessment. Do the same
+  // for questions that explicitly name one of his organizations or roles.
+  if (
+    !hasTargetRole &&
+    (bestMatchingSkill(query) || namesSpecificExperience)
+  ) {
+    return undefined;
+  }
+
+  if (softwareRole) {
+    return {
+      answer:
+        "For a software developer role, Sanjay is a good fit when the work involves backend services, data systems, automation, or analytics products. He has built Python REST API services with validation, retries, structured logging, and unit tests; works with Java, JavaScript, React, Node.js, SQL, and Python; and has delivered production-oriented ETL and reporting systems. His evidence is strongest in data-focused and backend engineering rather than deeply specialized frontend, mobile, or large-scale product engineering, so the exact fit depends on the role’s emphasis.",
+      sources: ["Projects", "Technical skills", "Experience"],
+      topic: "role-fit",
+      suggestions: [
+        "What backend experience does he have?",
+        "What problems has he solved?",
+        "What are his strongest skills?",
+      ],
+    };
+  }
+
+  if (dataEngineeringRole) {
+    return {
+      answer:
+        "Sanjay is a strong fit for an analytics-focused data engineering role. He builds Python ETL pipelines, relational data models, validation workflows, archived refreshes, and Tableau-ready datasets, and he also has SQL, PostgreSQL, Kafka, REST API, logging, and testing experience. His strongest evidence is in dependable reporting and analytics pipelines; the available work details show less direct ownership of large cloud data platforms, so that requirement should be evaluated separately.",
+      sources: ["Experience", "Projects", "Technical skills"],
+      topic: "role-fit",
+      suggestions: [
+        "Tell me about his ETL experience",
+        "What is his SQL experience?",
+        "What measurable impact has he had?",
+      ],
+    };
+  }
+
+  if (analyticsRole) {
+    return {
+      answer:
+        "Sanjay is a strong fit for data, reporting, or business-intelligence analyst roles. At ASU he builds validated ETL and Tableau reporting systems; at Hitachi he combined Power BI, KPI reporting, audits, regression, and trend analysis to help deliver 30% better operational efficiency, 40% operational improvement, and 20% fewer errors. He can connect technical data work to stakeholder decisions and repeatable processes.",
+      sources: ["Experience", "Technical skills"],
+      topic: "role-fit",
+      suggestions: [
+        "What reporting tools does he use?",
+        "What did he do at Hitachi?",
+        "What problems has he solved?",
+      ],
+    };
+  }
+
+  if (dataScienceRole) {
+    return {
+      answer:
+        "Sanjay is a credible fit for an applied or early-career data science role, especially one combining data preparation, analysis, visualization, and operational problem-solving. At IISc he developed a ball-tracking application, prepared annotated data, cleaned motion datasets, and analyzed trajectories; at Hitachi he used regression and trend analysis. His recent experience is stronger in analytics and data systems than in advanced model development, so a research-heavy ML role would require deeper evidence.",
+      sources: ["Experience", "Technical skills"],
+      topic: "role-fit",
+      suggestions: [
+        "What did he do at IISc?",
+        "What Python experience does he have?",
+        "What are his strongest skills?",
+      ],
+    };
+  }
+
+  if (qualityRole) {
+    return {
+      answer:
+        "Sanjay is a strong fit for quality analytics, process improvement, and compliance-focused roles. At Hitachi he designed QEI and Power BI reporting, conducted global quality audits, analyzed non-compliance patterns, supported CMMI Level 3 and ISO audits, and contributed to measurable efficiency and error-reduction improvements. He also brings automation, documentation, and stakeholder-reporting experience.",
+      sources: ["Experience", "Technical skills", "Achievements"],
+      topic: "role-fit",
+      suggestions: [
+        "What impact did he have at Hitachi?",
+        "What are his achievements?",
+        "What tools does he use?",
+      ],
+    };
+  }
+
+  return {
+    answer:
+      "Sanjay is strongest for work that combines data engineering, analytics, reporting, automation, and process improvement. He has built ETL and API pipelines, dashboards and data models, automated recurring workflows, supported formal audits, and documented systems for repeatable use. At Hitachi, that work contributed to 30% better operational efficiency, 40% operational improvement, and 20% fewer errors. Tell me the role title for a more specific and balanced fit assessment.",
+    sources: ["Experience", "Projects", "Technical skills"],
+    topic: "role-fit",
+    suggestions: [
+      "How does he fit a software developer role?",
+      "How does he fit a data analyst role?",
+      "What measurable impact has he had?",
+    ],
+  };
+}
+
 function profileFactReply(query: string): ChatReply | undefined {
   if (
     containsAny(query, [
@@ -990,6 +1187,9 @@ export function answerResumeQuestion(
       suggestions: followUpSuggestions.education,
     };
   }
+
+  const roleFit = roleFitReply(query, previousQuestion);
+  if (roleFit) return roleFit;
 
   const directRole = resumeProfile.experience.find(
     (entry) =>
